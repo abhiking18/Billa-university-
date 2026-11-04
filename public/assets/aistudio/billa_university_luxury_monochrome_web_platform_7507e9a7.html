@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BILLA UNIVERSITY — Luxury Monochrome Archive</title>
+  
+  <!-- Fonts: Bebas Neue / Anton display & Inter / Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Bebas Neue"', '"Anton"', 'sans-serif'],
+            sub: ['"Space Grotesk"', 'sans-serif'],
+            sans: ['"Inter"', 'sans-serif'],
+          },
+          colors: {
+            black: '#000000',
+            rich: '#0A0A0A',
+            card: '#111111',
+            cardHover: '#1A1A1A',
+            muted: '#9A9A9A',
+            subtleBorder: 'rgba(255, 255, 255, 0.12)',
+            subtleBorderHover: 'rgba(255, 255, 255, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Global Reset & Monochrome Isolation */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    body {
+      background-color: #000000;
+      color: #FFFFFF;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      cursor: default;
+    }
+
+    /* Fixed Background Layer Configuration */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(2px) grayscale(100%); /* Editable monochrome switch via CSS var */
+      transform: translateZ(0);
+    }
+
+    #bg-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(10,10,10,0.85) 60%, #000000 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Custom Cursor */
+    @media (pointer: fine) {
+      body {
+        cursor: none;
+      }
+      .custom-cursor-dot, .custom-cursor-ring {
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease;
+      }
+      .custom-cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #FFFFFF;
+      }
+      .custom-cursor-ring {
+        width: 44px;
+        height: 44px;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-family: 'Space Grotesk', sans-serif;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: #000000;
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+      }
+      .custom-cursor-ring.hover-active {
+        width: 76px;
+        height: 76px;
+        background-color: #FFFFFF;
+        border-color: #FFFFFF;
+        color: #000000;
+      }
+    }
+
+    /* Top Scroll Progress Line */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: #FFFFFF;
+      width: 0%;
+      z-index: 100;
+      pointer-events: none;
+      box-shadow: 0 0 10px rgba(255,255,255,0.7);
+    }
+
+    /* Marquee outline typography */
+    .marquee-text-outline {
+      -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+      color: transparent;
+      transition: color 0.4s ease, -webkit-text-stroke 0.4s ease;
+    }
+    .marquee-text-outline:hover {
+      color: #FFFFFF;
+      -webkit-text-stroke: 1.5px #FFFFFF;
+    }
+
+    /* Buttons Fill-Sweep & Magnetic feel */
+    .btn-luxury-primary {
+      position: relative;
+      overflow: hidden;
+      background: #FFFFFF;
+      color: #000000;
+      border: 1px solid #FFFFFF;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-luxury-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #000000;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 0;
+    }
+    .btn-luxury-primary:hover::before {
+      transform: translateY(0);
+    }
+    .btn-luxury-primary:hover {
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 30px rgba(255,255,255,0.12);
+    }
+
+    .btn-luxury-secondary {
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-luxury-secondary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 0;
+    }
+    .btn-luxury-secondary:hover::before {
+      transform: translateY(0);
+    }
+    .btn-luxury-secondary:hover {
+      color: #000000;
+      border-color: #FFFFFF;
+    }
+
+    /* Lightbox Modal */
+    #lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Glitch heading effect (Monochrome only) */
+    .glitch-mono {
+      position: relative;
+    }
+    .glitch-mono::before, .glitch-mono::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      clip: rect(0, 0, 0, 0);
+    }
+    .glitch-mono:hover::before {
+      left: -2px;
+      text-shadow: 2px 0 #9A9A9A;
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+    }
+    .glitch-mono:hover::after {
+      left: 2px;
+      text-shadow: -2px 0 #FFFFFF;
+      animation: glitch-anim-2 2s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-anim-1 {
+      0% { clip: rect(10px, 9999px, 44px, 0); }
+      20% { clip: rect(60px, 9999px, 85px, 0); }
+      40% { clip: rect(20px, 9999px, 35px, 0); }
+      60% { clip: rect(80px, 9999px, 120px, 0); }
+      80% { clip: rect(5px, 9999px, 60px, 0); }
+      100% { clip: rect(40px, 9999px, 70px, 0); }
+    }
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(40px, 9999px, 70px, 0); }
+      20% { clip: rect(10px, 9999px, 30px, 0); }
+      40% { clip: rect(70px, 9999px, 95px, 0); }
+      60% { clip: rect(25px, 9999px, 50px, 0); }
+      80% { clip: rect(90px, 9999px, 110px, 0); }
+      100% { clip: rect(15px, 9999px, 40px, 0); }
+    }
+
+    /* Page Curtain Wipe */
+    #page-curtain {
+      position: fixed;
+      inset: 0;
+      background: #000000;
+      z-index: 9990;
+      transform: translateY(100%);
+      pointer-events: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    /* Swiper customized */
+    .swiper-pagination-bullet {
+      background: rgba(255,255,255,0.3) !important;
+      opacity: 1 !important;
+    }
+    .swiper-pagination-bullet-active {
+      background: #FFFFFF !important;
+      width: 24px !important;
+      border-radius: 9999px !important;
+    }
+    
+    /* Subtle tilt / perspective */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    
+    /* Accessible Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="selection:bg-white selection:text-black">
+
+  <!-- ==========================================
+       CONFIGURABLE PROJECT DATA AT TOP (EASY EDIT)
+       ========================================== -->
+  <script>
+    // Toggle site-wide grayscale background image
+    const CONFIG = {
+      grayscaleBackground: true, // true: 100% monochrome | false: natural photo colors
+      siteName: "BILLA UNIVERSITY",
+      curator: "Made by Mriganka.001",
+      backgroundImg: "https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh"
+    };
+
+    // MEMES DATASET (Using uploaded assets + curated high-taste meme assets)
+    const MEMES = [
+      { id: 1, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh", caption: "Gadi lamborghini peele rang di menu kendi ay chala ve slowly", category: "Classroom", likes: 842 },
+      { id: 2, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym", caption: "My thumb after scrolling reels all day every day", category: "Hostel", likes: 1290 },
+      { id: 3, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuABAPsfutxv79aIqtxHRFAAM4rqBtB0pB913z6smOq7K4aio-3xk4g5ckSkXL1iboZNgYRZPmQ22NrQzbigvhCAQjpixRaKwIBOOuBiULwopphGdId-9U-PduMhRp_LSBx9eXQY7tcZtvjBhqKkiZN_T1e8s4He10fxNy1yQGsA_iHIAsDuLHgorHuHET11AyLtkv86pfUjVUXVawcGKEj1WvYDLu3AfGed78BxGocy0brb1Nk4hSde", caption: "Fridge me chill karti huin sabjiyan vs Palang ke nichhe pade hue aaloo", category: "Hostel", likes: 954 },
+      { id: 4, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk", caption: "Contractor: Pehle itna chal ke dekho... pasand aaye toh aur banwa denge", category: "Exams", likes: 2130 },
+      { id: 5, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAKZIDjtXdjrFyKXnPIgH7vhCAYzpQSfFn5CskvBPoYhuy1tb0J3xQFs2XSLaBk7hvxBjIQrL9LSdt1HwCxYqX5_n1ITNtbrfCj5PZ4g5Df4WKvqPCkmvXPWvNaw68aID7VDykwXE9_HjQSc_13p3q4mkpAOTrmZ_R1U44hFa9ycV5qc0CX-6a5AQD8Ybs-8LzK0ybPKn9N9juT5r_SBj9uGfxdL0Lqw6jICao2w_wqCcQieiRLSyjt", caption: "Disclaimer: This video is not made for kids except Balraj Singh bhai's kids", category: "Friends", likes: 1720 },
+      { id: 6, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx", caption: "Uncle namak hai? Colgate hai? Toh usme se dedo", category: "Friends", likes: 3105 },
+      { id: 7, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD378aPF068mjTznWw7hHjcXtoZNvTOXm5fQ5uqHMDhz1eZiPCcrNo5NcjNSM7EJ6Bra12qkX12F15ZifS81TGPClC0GzQnxDSAbfZ9a7CaZV7tsLyxCRurOmPoCZC9fQhIJxL0Fcyu6d5R_YZuMlTGDmVSzo_lLbgDebdDCYHB9OjHVOZ49cEN0so23ilIOrSCK5ZEi2bTVrjfboB8t_xGTNnNQJOxM-tAWQhmVcT5dwhfYLGNZtQ7", caption: "Smug Billa Chancellor approving the ultimate curriculum", category: "Classroom", likes: 4500 },
+      { id: 8, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym", caption: "Post-scroll joint stiffness during 3 AM study preparation", category: "Exams", likes: 640 },
+      { id: 9, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuABAPsfutxv79aIqtxHRFAAM4rqBtB0pB913z6smOq7K4aio-3xk4g5ckSkXL1iboZNgYRZPmQ22NrQzbigvhCAQjpixRaKwIBOOuBiULwopphGdId-9U-PduMhRp_LSBx9eXQY7tcZtvjBhqKkiZN_T1e8s4He10fxNy1yQGsA_iHIAsDuLHgorHuHET11AyLtkv86pfUjVUXVawcGKEj1WvYDLu3AfGed78BxGocy0brb1Nk4hSde", caption: "Department supplies left unattended beneath the mainframe", category: "Classroom", likes: 810 },
+      { id: 10, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk", caption: "Civil engineering thesis prototype: 10 meters of pure asphalt", category: "Exams", likes: 1890 },
+      { id: 11, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx", caption: "Chemical composition verification in the local convenience hub", category: "Hostel", likes: 994 },
+      { id: 12, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD378aPF068mjTznWw7hHjcXtoZNvTOXm5fQ5uqHMDhz1eZiPCcrNo5NcjNSM7EJ6Bra12qkX12F15ZifS81TGPClC0GzQnxDSAbfZ9a7CaZV7tsLyxCRurOmPoCZC9fQhIJxL0Fcyu6d5R_YZuMlTGDmVSzo_lLbgDebdDCYHB9OjHVOZ49cEN0so23ilIOrSCK5ZEi2bTVrjfboB8t_xGTNnNQJOxM-tAWQhmVcT5dwhfYLGNZtQ7", caption: "Final degree clearance granted with zero attendance verification", category: "Friends", likes: 5210 }
+    ];
+
+    // BRAINROT DATASET
+    const BRAINROT = [
+      { id: 1, title: "MAX LEVEL GYATT DISCOURSE", tag: "SKIBIDI 100", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym", desc: "Digital thumb hypertrophy observed after 14 consecutive hours of vertical video consumption." },
+      { id: 2, title: "THE UNPAVED METAVERSE", tag: "NPC BEHAVIOR", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk", desc: "Contractor built 5 meters of rendered road to test player physics before committing GPU memory." },
+      { id: 3, title: "PALANG STORAGE SYNDROME", tag: "SUB-ZERO AURA", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuABAPsfutxv79aIqtxHRFAAM4rqBtB0pB913z6smOq7K4aio-3xk4g5ckSkXL1iboZNgYRZPmQ22NrQzbigvhCAQjpixRaKwIBOOuBiULwopphGdId-9U-PduMhRp_LSBx9eXQY7tcZtvjBhqKkiZN_T1e8s4He10fxNy1yQGsA_iHIAsDuLHgorHuHET11AyLtkv86pfUjVUXVawcGKEj1WvYDLu3AfGed78BxGocy0brb1Nk4hSde", desc: "Aaloo specimens sequestered beneath dormitory mattresses awaiting culinary ascension." },
+      { id: 4, title: "CHANCELLOR BILLA SMUG ARCHIVE", tag: "SIGMA PROTOCOL", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD378aPF068mjTznWw7hHjcXtoZNvTOXm5fQ5uqHMDhz1eZiPCcrNo5NcjNSM7EJ6Bra12qkX12F15ZifS81TGPClC0GzQnxDSAbfZ9a7CaZV7tsLyxCRurOmPoCZC9fQhIJxL0Fcyu6d5R_YZuMlTGDmVSzo_lLbgDebdDCYHB9OjHVOZ49cEN0so23ilIOrSCK5ZEi2bTVrjfboB8t_xGTNnNQJOxM-tAWQhmVcT5dwhfYLGNZtQ7", desc: "Maintaining an impeccable smirk while evaluating university credentials." },
+      { id: 5, title: "COLLODIAL TOOTHPASTE INQUIRY", tag: "RIZZ NEGOTIATION", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx", desc: "Requesting oral hygiene sodium directly from Colgate inventory." }
+    ];
+
+    // ELITE BALL KNOWLEDGE QUIZ (10 football & cricket master questions)
+    const QUIZ = [
+      {
+        q: "Who scored the winning penalty for Chelsea in the 2012 UEFA Champions League final?",
+        options: ["Frank Lampard", "Didier Drogba", "Fernando Torres", "Ashley Cole"],
+        answer: 1
+      },
+      {
+        q: "Which bowler took 10 wickets in a single Test innings for India against Pakistan at Feroz Shah Kotla?",
+        options: ["Kapil Dev", "Anil Kumble", "Harbhajan Singh", "Javagal Srinath"],
+        answer: 1
+      },
+      {
+        q: "Which club was Zinedine Zidane playing for immediately before his world-record transfer to Real Madrid in 2001?",
+        options: ["Juventus", "Bordeaux", "Marseille", "AC Milan"],
+        answer: 0
+      },
+      {
+        q: "Who holds the record for the highest individual score in Men's ODI cricket (264 runs)?",
+        options: ["Virender Sehwag", "Martin Guptill", "Rohit Sharma", "Chris Gayle"],
+        answer: 2
+      },
+      {
+        q: "In what year did Arsenal complete their famous 'Invincibles' Premier League season without losing a single match?",
+        options: ["2001-02", "2002-03", "2003-04", "2004-05"],
+        answer: 2
+      },
+      {
+        q: "Which nation won the inaugural ICC Men's T20 World Cup in 2007?",
+        options: ["Pakistan", "India", "Australia", "West Indies"],
+        answer: 1
+      },
+      {
+        q: "Which manager famously coined the football phrase 'Park the Bus' in 2004?",
+        options: ["Alex Ferguson", "Pep Guardiola", "José Mourinho", "Arsène Wenger"],
+        answer: 2
+      },
+      {
+        q: "Who delivered the iconic 'Ball of the Century' to dismiss Mike Gatting in 1993?",
+        options: ["Shane Warne", "Muttiah Muralitharan", "Glenn McGrath", "Wasim Akram"],
+        answer: 0
+      },
+      {
+        q: "Lionel Messi spent the majority of his youth and senior career wearing #10, but what number did he wear upon debuting for Barcelona?",
+        options: ["#30", "#19", "#14", "#7"],
+        answer: 0
+      },
+      {
+        q: "Which cricketer holds the world record for hitting 6 sixes in an over during a T20 World Cup against England?",
+        options: ["Chris Gayle", "Yuvraj Singh", "Kieron Pollard", "Herschelle Gibbs"],
+        answer: 1
+      }
+    ];
+
+    const BALLKNOWLEDGE = [
+      { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD378aPF068mjTznWw7hHjcXtoZNvTOXm5fQ5uqHMDhz1eZiPCcrNo5NcjNSM7EJ6Bra12qkX12F15ZifS81TGPClC0GzQnxDSAbfZ9a7CaZV7tsLyxCRurOmPoCZC9fQhIJxL0Fcyu6d5R_YZuMlTGDmVSzo_lLbgDebdDCYHB9OjHVOZ49cEN0so23ilIOrSCK5ZEi2bTVrjfboB8t_xGTNnNQJOxM-tAWQhmVcT5dwhfYLGNZtQ7", caption: "Pep Guardiola tactical board analysis during UCL knockout crisis." },
+      { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk", caption: "The pitch inspection committee approving the sub-standard surface." },
+      { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym", caption: "Fantasy premier league manager hitting wildcard at 11:29 AM." },
+      { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx", caption: "Canteen uncle providing hydration during 40-over hot summer fixture." }
+    ];
+  </script>
+
+  <!-- Preloader Screen -->
+  <div id="preloader" class="fixed inset-0 bg-black z-[9999] flex flex-col justify-between p-8 md:p-16 transition-opacity duration-700">
+    <div class="flex justify-between items-center text-xs uppercase tracking-[0.2em] text-muted">
+      <span>INSTITUTE OF DIGITAL CULTURE</span>
+      <span>INDEX NO. 2026-X</span>
+    </div>
+    <div class="space-y-4">
+      <h1 class="font-display text-5xl md:text-8xl tracking-tight text-white uppercase">BILLA UNIVERSITY</h1>
+      <p class="font-sub text-sm md:text-base text-muted tracking-wider uppercase">Authenticating Memes • Brainrot • Elite Ball Knowledge</p>
+    </div>
+    <div class="w-full">
+      <div class="flex justify-between text-sm font-sub text-white mb-2">
+        <span>LOADING CURRICULUM</span>
+        <span id="preloader-pct">0%</span>
+      </div>
+      <div class="w-full h-[2px] bg-white/10 overflow-hidden">
+        <div id="preloader-bar" class="h-full bg-white w-0 transition-all duration-100 ease-out"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Wipe Curtain for Transitions -->
+  <div id="page-curtain"></div>
+
+  <!-- Fixed Top Scroll Progress Bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor-dot hidden md:block"></div>
+  <div class="custom-cursor-ring hidden md:flex"><span id="cursor-label"></span></div>
+
+  <!-- Fixed Fullscreen Background & Gradient Overlay -->
+  <div id="bg-layer"></div>
+  <div id="bg-overlay"></div>
+
+  <!-- Main Frame Container -->
+  <div class="relative z-10 flex flex-col min-h-screen">
+    
+    <!-- Minimal Header / Navbar -->
+    <header id="site-navbar" class="fixed top-0 left-0 w-full z-50 transition-transform duration-500 bg-black/60 backdrop-blur-md border-b border-subtleBorder">
+      <div class="max-w-[1600px] mx-auto px-6 md:px-12 h-20 md:h-24 flex items-center justify-between">
+        <!-- Wordmark -->
+        <a href="#/" class="group flex items-center space-x-3 text-decoration-none">
+          <span class="w-3 h-3 bg-white block transition-transform group-hover:scale-125"></span>
+          <span class="font-display text-2xl md:text-3xl tracking-tight text-white uppercase">BILLA UNIVERSITY</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-10 text-sm font-sub tracking-wider uppercase">
+          <a href="#/memes" class="nav-link relative py-2 text-muted hover:text-white transition-colors duration-200">
+            <span>Memes</span>
+            <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a href="#/brainrot" class="nav-link relative py-2 text-muted hover:text-white transition-colors duration-200">
+            <span>Brainrot</span>
+            <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a href="#/ballknowledge" class="nav-link relative py-2 text-muted hover:text-white transition-colors duration-200">
+            <span>Elite Ball Knowledge</span>
+            <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 group-hover:w-full"></span>
+          </a>
+        </nav>
+
+        <!-- Monochromatic Theme Switch Indicator & Mobile Trigger -->
+        <div class="flex items-center space-x-4">
+          <button id="toggle-bw-btn" title="Toggle Background Monochromatic Filter" class="hidden lg:flex items-center space-x-2 text-xs font-sub text-muted hover:text-white px-3 py-1.5 border border-subtleBorder rounded-full transition-colors">
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+            <span id="bw-status-label">B&W ON</span>
+          </button>
+
+          <!-- Mobile Hamburger -->
+          <button id="mobile-menu-btn" class="md:hidden text-white p-2 focus:outline-none" aria-label="Toggle Navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Fullscreen Overlay Navigation -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black z-40 hidden flex-col justify-between p-8 pt-28">
+      <div class="flex flex-col space-y-8 font-display text-4xl uppercase tracking-wider">
+        <a href="#/" class="mobile-nav-link text-white hover:text-muted" onclick="closeMobileMenu()">Home</a>
+        <a href="#/memes" class="mobile-nav-link text-white hover:text-muted" onclick="closeMobileMenu()">Memes</a>
+        <a href="#/brainrot" class="mobile-nav-link text-white hover:text-muted" onclick="closeMobileMenu()">Brainrot</a>
+        <a href="#/ballknowledge" class="mobile-nav-link text-white hover:text-muted" onclick="closeMobileMenu()">Elite Ball Knowledge</a>
+      </div>
+      <div class="border-t border-subtleBorder pt-6 flex justify-between items-center text-xs text-muted font-sub">
+        <span>BILLA UNIVERSITY ARCHIVE</span>
+        <button onclick="closeMobileMenu()" class="text-white uppercase tracking-wider underline">Close</button>
+      </div>
+    </div>
+
+    <!-- Dynamic Routed Content Container -->
+    <main id="app-viewport" class="flex-grow pt-24 md:pt-28">
+      
+      <!-- ==================================================
+           PAGE 1: HOME PAGE ROUTE
+           ================================================== -->
+      <div id="page-home" class="page-view block">
+        <!-- Hero Section (Full Viewport) -->
+        <section class="min-h-[85vh] md:min-h-[92vh] max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col justify-between py-12 md:py-16">
+          <div class="flex justify-between items-start pt-6 text-xs md:text-sm font-sub tracking-[0.25em] text-muted uppercase">
+            <span>SEMESTER 2026 • EST. 001</span>
+            <span>HIGH ACCREDITATION ARCHIVE</span>
+          </div>
+
+          <!-- Hero Display Typography -->
+          <div class="my-auto py-8">
+            <div class="overflow-hidden">
+              <h1 id="hero-title" class="font-display text-[clamp(56px,11vw,200px)] leading-[0.88] tracking-[-0.02em] text-white uppercase select-none">
+                BILLA UNIVERSITY
+              </h1>
+            </div>
+            <p class="font-sub text-lg md:text-2xl text-muted mt-6 max-w-2xl font-semibold tracking-tight">
+              Memes. Brainrot. Ball knowledge.
+            </p>
+
+            <!-- Hero Action Buttons -->
+            <div class="mt-10 flex flex-wrap gap-4 items-center">
+              <a href="#/memes" data-cursor="Open" class="btn-luxury-primary h-16 px-10 rounded-full inline-flex items-center justify-center font-sans font-semibold text-lg tracking-wide space-x-3 z-10">
+                <span class="relative z-10">Memes Archive</span>
+                <svg class="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+
+              <a href="#/brainrot" data-cursor="Explore" class="btn-luxury-secondary h-16 px-10 rounded-full inline-flex items-center justify-center font-sans font-semibold text-lg tracking-wide space-x-3 z-10">
+                <span class="relative z-10">Explore Brainrot</span>
+                <svg class="relative z-10 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Scroll Indicator -->
+          <div class="flex items-center justify-between border-t border-subtleBorder pt-6">
+            <span class="text-xs font-sub uppercase tracking-[0.2em] text-muted">Scroll down to inspect sectors</span>
+            <div class="flex items-center space-x-2 text-xs font-sub uppercase tracking-widest text-muted">
+              <span>Scroll</span>
+              <div class="w-4 h-8 border border-white/30 rounded-full flex justify-center p-1">
+                <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Huge Marquee Bar (Reverses Direction on Scroll) -->
+        <section id="marquee-section" class="py-12 border-y border-subtleBorder bg-black/40 overflow-hidden select-none">
+          <div id="marquee-track" class="flex whitespace-nowrap will-change-transform font-display text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter">
+            <span class="marquee-text-outline mx-6">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+            <span class="marquee-text-outline mx-6">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+            <span class="marquee-text-outline mx-6">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+            <span class="marquee-text-outline mx-6">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+          </div>
+        </section>
+
+        <!-- Three Large Feature Panels (Agency Portfolio Standard) -->
+        <section class="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-36 space-y-16">
+          <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-subtleBorder pb-8 gap-4">
+            <div>
+              <span class="text-xs font-sub uppercase tracking-[0.25em] text-muted block mb-2">SECTOR CATALOGUE</span>
+              <h2 class="font-display text-5xl md:text-7xl uppercase text-white tracking-tight">CORE ARCHIVES</h2>
+            </div>
+            <p class="font-sub text-muted text-sm md:text-base max-w-md">
+              Peer-reviewed internet phenomena curated without compromise.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Panel 1: Memes -->
+            <div class="feature-card group relative bg-card hover:bg-cardHover border border-subtleBorder hover:border-subtleBorderHover rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-all duration-500 overflow-hidden" data-cursor="View">
+              <div>
+                <div class="flex justify-between items-center text-xs font-sub text-muted tracking-widest uppercase mb-8">
+                  <span>FACULTY 01</span>
+                  <span>12+ ITEMS</span>
+                </div>
+                <div class="aspect-[4/3] rounded-2xl overflow-hidden mb-8 bg-black border border-white/5 relative">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh" alt="Memes Sector" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+                  <div class="absolute inset-0 bg-black/20 group-hover:opacity-0 transition-opacity"></div>
+                </div>
+                <h3 class="font-display text-4xl md:text-5xl uppercase tracking-tight text-white mb-3">MEMES</h3>
+                <p class="font-sub text-sm md:text-base text-muted">Certified productivity killers.</p>
+              </div>
+              <div class="mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
+                <a href="#/memes" class="inline-flex items-center text-sm font-sub uppercase tracking-wider text-white group-hover:translate-x-1 transition-transform">
+                  Enter Archive
+                </a>
+                <span class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Panel 2: Brainrot -->
+            <div class="feature-card group relative bg-card hover:bg-cardHover border border-subtleBorder hover:border-subtleBorderHover rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-all duration-500 overflow-hidden" data-cursor="View">
+              <div>
+                <div class="flex justify-between items-center text-xs font-sub text-muted tracking-widest uppercase mb-8">
+                  <span>FACULTY 02</span>
+                  <span>COGNITIVE RAYS</span>
+                </div>
+                <div class="aspect-[4/3] rounded-2xl overflow-hidden mb-8 bg-black border border-white/5 relative">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym" alt="Brainrot Sector" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+                  <div class="absolute inset-0 bg-black/20 group-hover:opacity-0 transition-opacity"></div>
+                </div>
+                <h3 class="font-display text-4xl md:text-5xl uppercase tracking-tight text-white mb-3">BRAINROT</h3>
+                <p class="font-sub text-sm md:text-base text-muted">Your brain cells left the chat.</p>
+              </div>
+              <div class="mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
+                <a href="#/brainrot" class="inline-flex items-center text-sm font-sub uppercase tracking-wider text-white group-hover:translate-x-1 transition-transform">
+                  Enter Chamber
+                </a>
+                <span class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Panel 3: Elite Ball Knowledge -->
+            <div class="feature-card group relative bg-card hover:bg-cardHover border border-subtleBorder hover:border-subtleBorderHover rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-all duration-500 overflow-hidden" data-cursor="View">
+              <div>
+                <div class="flex justify-between items-center text-xs font-sub text-muted tracking-widest uppercase mb-8">
+                  <span>FACULTY 03</span>
+                  <span>10 ROUND TEST</span>
+                </div>
+                <div class="aspect-[4/3] rounded-2xl overflow-hidden mb-8 bg-black border border-white/5 relative">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD378aPF068mjTznWw7hHjcXtoZNvTOXm5fQ5uqHMDhz1eZiPCcrNo5NcjNSM7EJ6Bra12qkX12F15ZifS81TGPClC0GzQnxDSAbfZ9a7CaZV7tsLyxCRurOmPoCZC9fQhIJxL0Fcyu6d5R_YZuMlTGDmVSzo_lLbgDebdDCYHB9OjHVOZ49cEN0so23ilIOrSCK5ZEi2bTVrjfboB8t_xGTNnNQJOxM-tAWQhmVcT5dwhfYLGNZtQ7" alt="Ball Knowledge Sector" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+                  <div class="absolute inset-0 bg-black/20 group-hover:opacity-0 transition-opacity"></div>
+                </div>
+                <h3 class="font-display text-4xl md:text-5xl uppercase tracking-tight text-white mb-3">ELITE BALL KNOWLEDGE</h3>
+                <p class="font-sub text-sm md:text-base text-muted">Only real ones know.</p>
+              </div>
+              <div class="mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
+                <a href="#/ballknowledge" class="inline-flex items-center text-sm font-sub uppercase tracking-wider text-white group-hover:translate-x-1 transition-transform">
+                  Start Examination
+                </a>
+                <span class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trending Carousel Section (Swiper.js with Center Scale & Drag) -->
+        <section class="max-w-[1600px] mx-auto px-6 md:px-12 py-20 border-t border-subtleBorder">
+          <div class="flex items-center justify-between mb-12">
+            <div>
+              <span class="text-xs font-sub uppercase tracking-[0.25em] text-muted block mb-2">SYNDICATED ARTIFACTS</span>
+              <h2 class="font-display text-4xl md:text-6xl uppercase text-white tracking-tight">TRENDING INTEL</h2>
+            </div>
+            
+            <!-- Controls -->
+            <div class="flex items-center space-x-3">
+              <button id="swiper-prev" class="w-14 h-14 rounded-full border border-subtleBorder hover:border-white flex items-center justify-center text-white transition-colors" aria-label="Previous Slide">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button id="swiper-next" class="w-14 h-14 rounded-full border border-subtleBorder hover:border-white flex items-center justify-center text-white transition-colors" aria-label="Next Slide">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Swiper Container -->
+          <div class="swiper trendingSwiper pb-14" data-cursor="Drag">
+            <div class="swiper-wrapper">
+              <!-- Slide 1 -->
+              <div class="swiper-slide bg-card border border-subtleBorder rounded-3xl p-6 transition-all duration-300">
+                <div class="aspect-square rounded-2xl overflow-hidden mb-4 bg-black">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh" class="w-full h-full object-cover" alt="Lamborghini Meme">
+                </div>
+                <span class="text-xs font-sub text-muted uppercase tracking-wider block mb-1">AUTOMOTIVE VELOCITY</span>
+                <h4 class="font-display text-2xl uppercase text-white tracking-tight line-clamp-1">Gadi Lamborghini Peele Rang Di</h4>
+                <p class="font-sub text-xs text-muted mt-2">Verified Punjabi Speed Protocol</p>
+              </div>
+              <!-- Slide 2 -->
+              <div class="swiper-slide bg-card border border-subtleBorder rounded-3xl p-6 transition-all duration-300">
+                <div class="aspect-square rounded-2xl overflow-hidden mb-4 bg-black">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk" class="w-full h-full object-cover" alt="Road Contractor Meme">
+                </div>
+                <span class="text-xs font-sub text-muted uppercase tracking-wider block mb-1">INFRASTRUCTURE BETA</span>
+                <h4 class="font-display text-2xl uppercase text-white tracking-tight line-clamp-1">Contractor Demo Strip</h4>
+                <p class="font-sub text-xs text-muted mt-2">10m Road Pilot Program</p>
+              </div>
+              <!-- Slide 3 -->
+              <div class="swiper-slide bg-card border border-subtleBorder rounded-3xl p-6 transition-all duration-300">
+                <div class="aspect-square rounded-2xl overflow-hidden mb-4 bg-black">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKZIDjtXdjrFyKXnPIgH7vhCAYzpQSfFn5CskvBPoYhuy1tb0J3xQFs2XSLaBk7hvxBjIQrL9LSdt1HwCxYqX5_n1ITNtbrfCj5PZ4g5Df4WKvqPCkmvXPWvNaw68aID7VDykwXE9_HjQSc_13p3q4mkpAOTrmZ_R1U44hFa9ycV5qc0CX-6a5AQD8Ybs-8LzK0ybPKn9N9juT5r_SBj9uGfxdL0Lqw6jICao2w_wqCcQieiRLSyjt" class="w-full h-full object-cover" alt="Latent Disclaimer">
+                </div>
+                <span class="text-xs font-sub text-muted uppercase tracking-wider block mb-1">BROADCAST CLAUSE</span>
+                <h4 class="font-display text-2xl uppercase text-white tracking-tight line-clamp-1">Parental Discretion Advised</h4>
+                <p class="font-sub text-xs text-muted mt-2">Balraj Singh Specific Exemption</p>
+              </div>
+              <!-- Slide 4 -->
+              <div class="swiper-slide bg-card border border-subtleBorder rounded-3xl p-6 transition-all duration-300">
+                <div class="aspect-square rounded-2xl overflow-hidden mb-4 bg-black">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuABAPsfutxv79aIqtxHRFAAM4rqBtB0pB913z6smOq7K4aio-3xk4g5ckSkXL1iboZNgYRZPmQ22NrQzbigvhCAQjpixRaKwIBOOuBiULwopphGdId-9U-PduMhRp_LSBx9eXQY7tcZtvjBhqKkiZN_T1e8s4He10fxNy1yQGsA_iHIAsDuLHgorHuHET11AyLtkv86pfUjVUXVawcGKEj1WvYDLu3AfGed78BxGocy0brb1Nk4hSde" class="w-full h-full object-cover" alt="Fridge vs Aaloo">
+                </div>
+                <span class="text-xs font-sub text-muted uppercase tracking-wider block mb-1">HOSTEL AGRONOMY</span>
+                <h4 class="font-display text-2xl uppercase text-white tracking-tight line-clamp-1">Under-Bed Storage Tuber</h4>
+                <p class="font-sub text-xs text-muted mt-2">Dormitory Solanum Tuberosum</p>
+              </div>
+              <!-- Slide 5 -->
+              <div class="swiper-slide bg-card border border-subtleBorder rounded-3xl p-6 transition-all duration-300">
+                <div class="aspect-square rounded-2xl overflow-hidden mb-4 bg-black">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx" class="w-full h-full object-cover" alt="Colgate Salt">
+                </div>
+                <span class="text-xs font-sub text-muted uppercase tracking-wider block mb-1">COMMERCE INQUIRY</span>
+                <h4 class="font-display text-2xl uppercase text-white tracking-tight line-clamp-1">Uncle Namak Hai?</h4>
+                <p class="font-sub text-xs text-muted mt-2">Extraction via Toothpaste Dispenser</p>
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==================================================
+           PAGE 2: MEMES PAGE ROUTE (#/memes)
+           ================================================== -->
+      <div id="page-memes" class="page-view hidden">
+        <section class="max-w-[1600px] mx-auto px-6 md:px-12 py-10 md:py-16">
+          <div class="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-muted mb-6">
+            <a href="#/" class="hover:text-white transition-colors">← Back to Index</a>
+            <span>/</span>
+            <span>Archive Index 01</span>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-subtleBorder pb-10 gap-6">
+            <div>
+              <h1 class="font-display text-6xl md:text-9xl uppercase tracking-tight text-white">MEMES</h1>
+              <p class="font-sub text-lg md:text-2xl text-muted font-semibold mt-2">Certified productivity killers.</p>
+            </div>
+            
+            <!-- Upload Meme Action (FileReader device upload) -->
+            <div>
+              <label class="btn-luxury-primary h-14 px-8 rounded-full inline-flex items-center space-x-3 cursor-pointer text-sm font-sub font-semibold tracking-wider uppercase select-none">
+                <svg class="w-4 h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span class="relative z-10">Upload Meme</span>
+                <input type="file" id="meme-file-input" accept="image/*" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <!-- Featured Meme Slider -->
+          <div class="my-16">
+            <div class="swiper featuredMemesSwiper rounded-3xl border border-subtleBorder overflow-hidden bg-card">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide p-8 md:p-14 flex flex-col md:flex-row items-center gap-10">
+                  <div class="w-full md:w-1/2 aspect-video rounded-2xl overflow-hidden bg-black">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh" class="w-full h-full object-cover" alt="Featured 1">
+                  </div>
+                  <div class="w-full md:w-1/2 space-y-4">
+                    <span class="text-xs font-sub text-muted uppercase tracking-[0.2em]">FEATURED SPECIMEN 01</span>
+                    <h3 class="font-display text-4xl md:text-5xl uppercase text-white">SHINCHAN DRIFT MANEUVER</h3>
+                    <p class="font-sub text-muted text-base">"Gadi lamborghini peele rang di menu kendi ay chala ve slowly"</p>
+                  </div>
+                </div>
+                <div class="swiper-slide p-8 md:p-14 flex flex-col md:flex-row items-center gap-10">
+                  <div class="w-full md:w-1/2 aspect-video rounded-2xl overflow-hidden bg-black">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk" class="w-full h-full object-cover" alt="Featured 2">
+                  </div>
+                  <div class="w-full md:w-1/2 space-y-4">
+                    <span class="text-xs font-sub text-muted uppercase tracking-[0.2em]">FEATURED SPECIMEN 02</span>
+                    <h3 class="font-display text-4xl md:text-5xl uppercase text-white">INFRASTRUCTURE EVALUATION</h3>
+                    <p class="font-sub text-muted text-base">"Pehle itna chal ke dekho... pasand aaye toh aur banwa denge"</p>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <!-- Category Filter Tabs with Sliding White Indicator -->
+          <div class="flex items-center justify-between flex-wrap gap-4 mb-12">
+            <div id="filter-tabs-wrapper" class="relative inline-flex p-1.5 bg-card border border-subtleBorder rounded-full overflow-hidden">
+              <div id="tab-sliding-indicator" class="absolute top-1.5 bottom-1.5 rounded-full bg-white transition-all duration-300 ease-out z-0"></div>
+              
+              <button class="filter-tab-btn relative z-10 px-6 py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold text-black transition-colors" data-category="All">All</button>
+              <button class="filter-tab-btn relative z-10 px-6 py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold text-muted hover:text-white transition-colors" data-category="Classroom">Classroom</button>
+              <button class="filter-tab-btn relative z-10 px-6 py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold text-muted hover:text-white transition-colors" data-category="Exams">Exams</button>
+              <button class="filter-tab-btn relative z-10 px-6 py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold text-muted hover:text-white transition-colors" data-category="Hostel">Hostel</button>
+              <button class="filter-tab-btn relative z-10 px-6 py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold text-muted hover:text-white transition-colors" data-category="Friends">Friends</button>
+            </div>
+            <span id="meme-count-badge" class="text-xs font-sub text-muted uppercase tracking-widest">12 Records Loaded</span>
+          </div>
+
+          <!-- Masonry / Staggered Grid of Meme Cards -->
+          <div id="memes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Rendered dynamically by JS from MEMES array -->
+          </div>
+        </section>
+      </div>
+
+      <!-- ==================================================
+           PAGE 3: BRAINROT PAGE ROUTE (#/brainrot)
+           ================================================== -->
+      <div id="page-brainrot" class="page-view hidden">
+        <section class="max-w-[1600px] mx-auto px-6 md:px-12 py-10 md:py-16">
+          <div class="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-muted mb-6">
+            <a href="#/" class="hover:text-white transition-colors">← Back to Index</a>
+            <span>/</span>
+            <span>Archive Index 02</span>
+          </div>
+
+          <!-- Glitch Heading (Strictly Monochrome) -->
+          <div class="border-b border-subtleBorder pb-10 mb-16">
+            <h1 class="glitch-mono font-display text-6xl md:text-9xl uppercase tracking-tight text-white inline-block cursor-default select-none" data-text="BRAINROT">
+              BRAINROT
+            </h1>
+            <p class="font-sub text-lg md:text-2xl text-muted font-semibold mt-2">Your brain cells left the chat.</p>
+          </div>
+
+          <!-- Marquee Strips in Opposite Directions -->
+          <div class="space-y-4 my-16 border-y border-subtleBorder py-8 bg-black/40 overflow-hidden select-none">
+            <div id="brainrot-marquee-1" class="flex whitespace-nowrap font-display text-4xl md:text-6xl uppercase tracking-wider text-muted">
+              <span class="mx-6">SKIBIDI • SIGMA • RIZZ • AURA • NPC • SKIBIDI • SIGMA • RIZZ • AURA • NPC •</span>
+              <span class="mx-6">SKIBIDI • SIGMA • RIZZ • AURA • NPC • SKIBIDI • SIGMA • RIZZ • AURA • NPC •</span>
+            </div>
+            <div id="brainrot-marquee-2" class="flex whitespace-nowrap font-display text-4xl md:text-6xl uppercase tracking-wider marquee-text-outline">
+              <span class="mx-6">MOGGING • OHIO • MEWING • BABY GRONK • LIVVY DUNNE • FANUM TAX •</span>
+              <span class="mx-6">MOGGING • OHIO • MEWING • BABY GRONK • LIVVY DUNNE • FANUM TAX •</span>
+            </div>
+          </div>
+
+          <!-- Rot Level Diagnostic Tool (Interactive Gauge) -->
+          <div class="bg-card border border-subtleBorder rounded-3xl p-8 md:p-14 my-20 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div class="max-w-xl space-y-4">
+              <span class="text-xs font-sub uppercase tracking-[0.25em] text-muted block">BIOMETRIC ROT CALCULATOR</span>
+              <h3 class="font-display text-4xl md:text-6xl uppercase text-white">EVALUATE COGNITIVE ATROPHY</h3>
+              <p class="font-sub text-muted text-base">Press the gauge to compute instantaneous synaptic decay after exposure to short-form media loops.</p>
+              
+              <div class="pt-4">
+                <button id="calc-rot-btn" class="btn-luxury-primary h-16 px-10 rounded-full inline-flex items-center space-x-3 font-sub text-sm font-semibold uppercase tracking-wider">
+                  <span class="relative z-10">Check My Rot Level</span>
+                  <svg class="w-4 h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Circular Gauge Visualization -->
+            <div class="relative w-56 h-56 flex items-center justify-center">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="42" stroke="rgba(255, 255, 255, 0.1)" stroke-width="4" fill="none"/>
+                <circle id="rot-gauge-circle" cx="50" cy="50" r="42" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="264" stroke-dashoffset="264" stroke-linecap="round" fill="none" class="transition-all duration-1000 ease-out"/>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span id="rot-percentage" class="font-display text-5xl text-white">0%</span>
+                <span id="rot-status" class="font-sub text-xs uppercase tracking-widest text-muted mt-1">IDLE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Horizontal Scroll-Driven Gallery (GSAP ScrollTrigger Simulation & Swiper Fallback) -->
+          <div class="my-20">
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <span class="text-xs font-sub uppercase tracking-[0.25em] text-muted block mb-1">CHRONOLOGICAL VAULT</span>
+                <h3 class="font-display text-4xl md:text-5xl uppercase text-white">BRAINROT CHRONICLES</h3>
+              </div>
+              <span class="text-xs font-sub uppercase tracking-wider text-muted hidden md:block">Scroll or Drag Horizontally</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <!-- Rendered via JS -->
+              <div id="brainrot-cards-container" class="contents"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==================================================
+           PAGE 4: ELITE BALL KNOWLEDGE (#/ballknowledge)
+           ================================================== -->
+      <div id="page-ballknowledge" class="page-view hidden">
+        <section class="max-w-[1600px] mx-auto px-6 md:px-12 py-10 md:py-16">
+          <div class="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-muted mb-6">
+            <a href="#/" class="hover:text-white transition-colors">← Back to Index</a>
+            <span>/</span>
+            <span>Archive Index 03</span>
+          </div>
+
+          <div class="border-b border-subtleBorder pb-10 mb-16">
+            <h1 class="font-display text-6xl md:text-9xl uppercase tracking-tight text-white">ELITE BALL KNOWLEDGE</h1>
+            <p class="font-sub text-lg md:text-2xl text-muted font-semibold mt-2">Only real ones know.</p>
+          </div>
+
+          <!-- Quiz Interactive Card (Centered Master Module) -->
+          <div id="quiz-wrapper" class="max-w-3xl mx-auto my-12 bg-card border border-subtleBorder rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <!-- Streak & Progress -->
+            <div class="flex items-center justify-between border-b border-subtleBorder pb-6 mb-8 text-xs font-sub uppercase tracking-wider">
+              <div class="flex items-center space-x-3">
+                <span id="quiz-step-label" class="text-white font-semibold">QUESTION 1 / 10</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                <span id="quiz-streak-label" class="text-muted">STREAK: 0</span>
+              </div>
+              <div class="w-36 h-2 bg-white/10 rounded-full overflow-hidden">
+                <div id="quiz-progress-bar" class="h-full bg-white w-[10%] transition-all duration-300"></div>
+              </div>
+            </div>
+
+            <!-- Question Body -->
+            <div id="quiz-question-box" class="transition-all duration-300">
+              <h3 id="quiz-question-text" class="font-sub text-xl md:text-2xl font-bold text-white mb-8 leading-snug">
+                Question prompt loading...
+              </h3>
+
+              <!-- Options Grid -->
+              <div id="quiz-options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Buttons injected via JS -->
+              </div>
+            </div>
+
+            <!-- Quiz Completed Screen (Hidden by Default) -->
+            <div id="quiz-result-box" class="hidden text-center py-12 space-y-6">
+              <span class="text-xs font-sub uppercase tracking-[0.3em] text-muted block">EXAMINATION CONCLUDED</span>
+              <h2 id="quiz-rank-title" class="font-display text-5xl md:text-7xl uppercase text-white tracking-tight">CERTIFIED BALL KNOWER</h2>
+              <p id="quiz-score-summary" class="font-sub text-muted text-lg">Score: 10 / 10 (100% Accuracy)</p>
+              
+              <div class="pt-6">
+                <button id="quiz-restart-btn" class="btn-luxury-primary h-16 px-10 rounded-full font-sub font-semibold text-sm uppercase tracking-wider">
+                  <span class="relative z-10">Retake Examination</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ball Knowledge Gallery Strip -->
+          <div class="my-24 border-t border-subtleBorder pt-16">
+            <div class="flex items-center justify-between mb-10">
+              <div>
+                <span class="text-xs font-sub uppercase tracking-[0.25em] text-muted block mb-1">TACTICAL REPOSITORY</span>
+                <h3 class="font-display text-4xl md:text-6xl uppercase text-white">BALL ARCHIVE REEL</h3>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="ballknowledge-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </main>
+
+    <!-- Global Minimal Footer -->
+    <footer class="mt-auto border-t border-subtleBorder bg-black/90 backdrop-blur-md relative z-20">
+      <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center space-x-4">
+          <span class="w-2.5 h-2.5 bg-white block"></span>
+          <p class="font-sub text-xs md:text-sm uppercase tracking-wider text-muted">
+            Made by Mriganka.001
+          </p>
+        </div>
+        
+        <div class="flex items-center space-x-8 text-xs font-sub uppercase tracking-widest text-muted">
+          <span>MONOCHROME ARCHIVE • AWWWARDS SPEC</span>
+          <button id="back-to-top" class="text-white hover:underline flex items-center space-x-1 cursor-pointer">
+            <span>Back to top</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lightbox Modal for Memes -->
+  <div id="lightbox" class="fixed inset-0 bg-black/95 z-[9995] opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col justify-between p-6 md:p-12">
+    <div class="flex items-center justify-between text-xs font-sub uppercase tracking-wider text-muted border-b border-subtleBorder pb-4">
+      <span id="lb-index">SPECIMEN VIEW</span>
+      <button id="lb-close-btn" class="text-white hover:text-muted flex items-center space-x-2 text-sm font-sub">
+        <span>CLOSE</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Center Display -->
+    <div class="relative flex-grow flex items-center justify-center my-6">
+      <img id="lb-img" src="" alt="Enlarged Meme" class="max-h-[75vh] max-w-[90vw] object-contain rounded-xl border border-subtleBorder">
+      
+      <!-- Nav Chevrons -->
+      <button id="lb-prev" class="absolute left-0 md:left-4 w-12 h-12 rounded-full border border-subtleBorder bg-black/60 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors" aria-label="Previous">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button id="lb-next" class="absolute right-0 md:right-4 w-12 h-12 rounded-full border border-subtleBorder bg-black/60 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors" aria-label="Next">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="border-t border-subtleBorder pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sub text-muted">
+      <p id="lb-caption" class="text-white text-sm font-medium">Caption</p>
+      <div class="flex items-center space-x-6">
+        <span>Use Left / Right arrow keys</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CDN Scripts: GSAP, ScrollTrigger, Lenis, Swiper, Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Application Logic & Animations -->
+  <script>
+    // 1. Initial State & Setup
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initialize Lenis Smooth Scrolling
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    } catch(e) {
+      console.warn('Lenis could not be initialized:', e);
+    }
+
+    // 2. Preloader Animation
+    window.addEventListener('DOMContentLoaded', () => {
+      let pct = 0;
+      const pctEl = document.getElementById('preloader-pct');
+      const barEl = document.getElementById('preloader-bar');
+      const preloader = document.getElementById('preloader');
+
+      const interval = setInterval(() => {
+        pct += Math.floor(Math.random() * 20) + 10;
+        if (pct >= 100) {
+          pct = 100;
+          clearInterval(interval);
+          pctEl.textContent = '100%';
+          barEl.style.width = '100%';
+          setTimeout(() => {
+            gsap.to(preloader, {
+              yPercent: -100,
+              duration: 0.9,
+              ease: 'power4.inOut',
+              onComplete: () => {
+                preloader.style.display = 'none';
+                initHeroAnimations();
+              }
+            });
+          }, 300);
+        } else {
+          pctEl.textContent = `${pct}%`;
+          barEl.style.width = `${pct}%`;
+        }
+      }, 50);
+
+      initCursor();
+      initSwipers();
+      renderMemesGrid('All');
+      renderBrainrotCards();
+      renderBallknowledgeGrid();
+      initQuiz();
+      initRouter();
+    });
+
+    // 3. Hero Animations on Reveal
+    function initHeroAnimations() {
+      gsap.from('#hero-title', {
+        y: 120,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power3.out'
+      });
+      gsap.from('.feature-card', {
+        y: 60,
+        opacity: 0,
+        stagger: 0.2,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.feature-card',
+          start: 'top 85%',
+        }
+      });
+    }
+
+    // 4. Custom Cursor Logic with Hover States
+    function initCursor() {
+      const dot = document.querySelector('.custom-cursor-dot');
+      const ring = document.querySelector('.custom-cursor-ring');
+      const label = document.getElementById('cursor-label');
+
+      if (!dot || !ring) return;
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        gsap.to(dot, { x: mouseX, y: mouseY, duration: 0.05, ease: 'none' });
+      });
+
+      gsap.ticker.add(() => {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        gsap.set(ring, { x: ringX, y: ringY });
+      });
+
+      // Interactive hover attributes
+      document.querySelectorAll('[data-cursor]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          ring.classList.add('hover-active');
+          label.textContent = el.getAttribute('data-cursor') || '';
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.classList.remove('hover-active');
+          label.textContent = '';
+        });
+      });
+
+      document.querySelectorAll('a, button, input, label').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          if (!el.hasAttribute('data-cursor')) {
+            ring.classList.add('hover-active');
+          }
+        });
+        el.addEventListener('mouseleave', () => {
+          if (!el.hasAttribute('data-cursor')) {
+            ring.classList.remove('hover-active');
+          }
+        });
+      });
+    }
+
+    // 5. Scroll Progress Bar & Hide/Show Navbar
+    let lastScrollY = 0;
+    const navbar = document.getElementById('site-navbar');
+    const progressBar = document.getElementById('progress-bar');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? (scrollY / maxScroll) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+
+      // Marquee speed shift with scroll
+      const track = document.getElementById('marquee-track');
+      if (track) {
+        track.style.transform = `translateX(-${(scrollY * 0.35) % 1000}px)`;
+      }
+
+      // Navbar smart hide on scroll down, show on scroll up
+      if (scrollY > 120 && scrollY > lastScrollY) {
+        navbar.style.transform = 'translateY(-100%)';
+      } else {
+        navbar.style.transform = 'translateY(0)';
+      }
+      lastScrollY = scrollY;
+    });
+
+    // 6. Monochromatic Filter Toggle (Single Variable Switch)
+    const toggleBwBtn = document.getElementById('toggle-bw-btn');
+    const bwLabel = document.getElementById('bw-status-label');
+    const bgLayer = document.getElementById('bg-layer');
+
+    function applyGrayscaleState() {
+      if (CONFIG.grayscaleBackground) {
+        bgLayer.style.filter = 'blur(2px) grayscale(100%)';
+        bwLabel.textContent = 'B&W ON';
+      } else {
+        bgLayer.style.filter = 'blur(2px) grayscale(0%)';
+        bwLabel.textContent = 'B&W OFF';
+      }
+    }
+    applyGrayscaleState();
+
+    toggleBwBtn.addEventListener('click', () => {
+      CONFIG.grayscaleBackground = !CONFIG.grayscaleBackground;
+      applyGrayscaleState();
+    });
+
+    // 7. Hash-Based Router (#/, #/memes, #/brainrot, #/ballknowledge)
+    const pages = {
+      '': document.getElementById('page-home'),
+      '/': document.getElementById('page-home'),
+      '/memes': document.getElementById('page-memes'),
+      '/brainrot': document.getElementById('page-brainrot'),
+      '/ballknowledge': document.getElementById('page-ballknowledge'),
+    };
+
+    function initRouter() {
+      window.addEventListener('hashchange', handleRoute);
+      handleRoute();
+    }
+
+    function handleRoute() {
+      const rawHash = window.location.hash.slice(1) || '/';
+      const targetPage = pages[rawHash] || pages['/'];
+      const curtain = document.getElementById('page-curtain');
+
+      // Curtain page wipe transition
+      gsap.timeline()
+        .set(curtain, { yPercent: 100 })
+        .to(curtain, {
+          yPercent: 0,
+          duration: 0.35,
+          ease: 'power3.in',
+          onComplete: () => {
+            // Hide all pages, show target
+            Object.values(pages).forEach(p => p.classList.add('hidden'));
+            targetPage.classList.remove('hidden');
+            window.scrollTo(0, 0);
+            if (lenis) lenis.scrollTo(0, { immediate: true });
+            ScrollTrigger.refresh();
+          }
+        })
+        .to(curtain, {
+          yPercent: -100,
+          duration: 0.45,
+          ease: 'power3.out'
+        });
+
+      // Update active nav style
+      document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href').slice(1);
+        if (href === rawHash) {
+          link.classList.remove('text-muted');
+          link.classList.add('text-white');
+        } else {
+          link.classList.add('text-muted');
+          link.classList.remove('text-white');
+        }
+      });
+    }
+
+    // Mobile Menu Helper
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('flex');
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('flex');
+    }
+
+    // 8. Swiper Carousels Initialization
+    function initSwipers() {
+      new Swiper('.trendingSwiper', {
+        slidesPerView: 1.2,
+        spaceBetween: 24,
+        centeredSlides: false,
+        navigation: {
+          nextEl: '#swiper-next',
+          prevEl: '#swiper-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        breakpoints: {
+          640: { slidesPerView: 2.2, spaceBetween: 24 },
+          1024: { slidesPerView: 3.5, spaceBetween: 32 }
+        }
+      });
+
+      new Swiper('.featuredMemesSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        autoplay: {
+          delay: 4500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        }
+      });
+    }
+
+    // 9. Memes Grid Rendering & Filtering & Lightbox
+    const memesGrid = document.getElementById('memes-grid');
+    const filterButtons = document.querySelectorAll('.filter-tab-btn');
+    const slidingIndicator = document.getElementById('tab-sliding-indicator');
+    const countBadge = document.getElementById('meme-count-badge');
+
+    function renderMemesGrid(category = 'All') {
+      memesGrid.innerHTML = '';
+      const filtered = category === 'All' ? MEMES : MEMES.filter(m => m.category === category);
+      countBadge.textContent = `${filtered.length} Records Loaded`;
+
+      filtered.forEach((meme, index) => {
+        const card = document.createElement('div');
+        card.className = 'group bg-card border border-subtleBorder hover:border-subtleBorderHover rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="aspect-square rounded-2xl overflow-hidden mb-5 bg-black cursor-pointer relative" onclick="openLightbox(${meme.id})">
+              <img src="${meme.src}" alt="${meme.caption}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500">
+              <div class="absolute inset-0 bg-black/10 group-hover:opacity-0 transition-opacity"></div>
+              <span class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-sub uppercase tracking-wider text-muted border border-white/10">
+                ${meme.category}
+              </span>
+            </div>
+            <p class="font-sub text-base text-white font-medium line-clamp-2">${meme.caption}</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-sub text-muted">
+            <button onclick="likeMeme(this, ${meme.id})" class="inline-flex items-center space-x-2 hover:text-white transition-colors">
+              <svg class="w-4 h-4 like-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <span class="like-count">${meme.likes}</span>
+            </button>
+            <button onclick="openLightbox(${meme.id})" class="hover:text-white uppercase tracking-wider">Inspect</button>
+          </div>
+        `;
+        memesGrid.appendChild(card);
+      });
+    }
+
+    function positionFilterIndicator(btn) {
+      if (!btn || !slidingIndicator) return;
+      slidingIndicator.style.left = `${btn.offsetLeft}px`;
+      slidingIndicator.style.width = `${btn.offsetWidth}px`;
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('text-black');
+          b.classList.add('text-muted');
+        });
+        btn.classList.add('text-black');
+        btn.classList.remove('text-muted');
+        positionFilterIndicator(btn);
+        renderMemesGrid(btn.dataset.category);
+      });
+    });
+    // Set initial position
+    setTimeout(() => positionFilterIndicator(filterButtons[0]), 100);
+
+    // Like button toggle
+    window.likeMeme = function(btn, id) {
+      const icon = btn.querySelector('.like-icon');
+      const countEl = btn.querySelector('.like-count');
+      const current = parseInt(countEl.textContent, 10);
+      if (icon.getAttribute('fill') === 'currentColor') {
+        icon.setAttribute('fill', 'none');
+        countEl.textContent = current - 1;
+      } else {
+        icon.setAttribute('fill', 'currentColor');
+        icon.classList.add('text-white');
+        countEl.textContent = current + 1;
+      }
+    };
+
+    // User Meme Upload via FileReader
+    const memeFileInput = document.getElementById('meme-file-input');
+    memeFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const newMeme = {
+          id: Date.now(),
+          src: event.target.result,
+          caption: "User uploaded archive specimen from local storage.",
+          category: "Friends",
+          likes: 1
+        };
+        MEMES.unshift(newMeme);
+        renderMemesGrid('All');
+        // Reset indicator to 'All'
+        positionFilterIndicator(filterButtons[0]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Lightbox modal functionality
+    let currentLbIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const lbCaption = document.getElementById('lb-caption');
+    const lbIndexLabel = document.getElementById('lb-index');
+
+    window.openLightbox = function(memeId) {
+      const idx = MEMES.findIndex(m => m.id === memeId);
+      currentLbIndex = idx !== -1 ? idx : 0;
+      updateLightboxDisplay();
+      lightbox.classList.add('active');
+    };
+
+    function updateLightboxDisplay() {
+      const item = MEMES[currentLbIndex];
+      if (!item) return;
+      lbImg.src = item.src;
+      lbCaption.textContent = item.caption;
+      lbIndexLabel.textContent = `SPECIMEN ${currentLbIndex + 1} OF ${MEMES.length}`;
+    }
+
+    document.getElementById('lb-close-btn').addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+    document.getElementById('lb-prev').addEventListener('click', () => {
+      currentLbIndex = (currentLbIndex - 1 + MEMES.length) % MEMES.length;
+      updateLightboxDisplay();
+    });
+    document.getElementById('lb-next').addEventListener('click', () => {
+      currentLbIndex = (currentLbIndex + 1) % MEMES.length;
+      updateLightboxDisplay();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') lightbox.classList.remove('active');
+      if (e.key === 'ArrowLeft') {
+        currentLbIndex = (currentLbIndex - 1 + MEMES.length) % MEMES.length;
+        updateLightboxDisplay();
+      }
+      if (e.key === 'ArrowRight') {
+        currentLbIndex = (currentLbIndex + 1) % MEMES.length;
+        updateLightboxDisplay();
+      }
+    });
+
+    // 10. Brainrot Page: Marquee & Rot Calculator & Cards
+    function renderBrainrotCards() {
+      const container = document.getElementById('brainrot-cards-container');
+      if (!container) return;
+      container.innerHTML = BRAINROT.map(item => `
+        <div class="bg-card border border-subtleBorder hover:border-subtleBorderHover rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="aspect-video rounded-2xl overflow-hidden mb-6 bg-black">
+              <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
+            </div>
+            <span class="text-xs font-sub text-muted tracking-widest uppercase block mb-2">${item.tag}</span>
+            <h4 class="font-display text-2xl md:text-3xl uppercase text-white mb-2">${item.title}</h4>
+            <p class="font-sub text-sm text-muted">${item.desc}</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-xs font-sub text-muted">
+            <span>SYNAPSE VERIFIED</span>
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Rot Calculator Trigger
+    const calcRotBtn = document.getElementById('calc-rot-btn');
+    const rotCircle = document.getElementById('rot-gauge-circle');
+    const rotPctLabel = document.getElementById('rot-percentage');
+    const rotStatusLabel = document.getElementById('rot-status');
+
+    if (calcRotBtn) {
+      calcRotBtn.addEventListener('click', () => {
+        calcRotBtn.disabled = true;
+        rotStatusLabel.textContent = "COMPUTING...";
+        const targetRot = Math.floor(Math.random() * 41) + 60; // 60% to 100%
+        let current = 0;
+
+        const maxDash = 264;
+        const interval = setInterval(() => {
+          current += 2;
+          if (current >= targetRot) {
+            current = targetRot;
+            clearInterval(interval);
+            calcRotBtn.disabled = false;
+            rotStatusLabel.textContent = `${targetRot}% ROTTED`;
+          }
+          rotPctLabel.textContent = `${current}%`;
+          const offset = maxDash - (maxDash * (current / 100));
+          rotCircle.style.strokeDashoffset = offset;
+        }, 20);
+      });
+    }
+
+    // 11. Elite Ball Knowledge Quiz Logic
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let quizStreak = 0;
+
+    const quizStepLabel = document.getElementById('quiz-step-label');
+    const quizStreakLabel = document.getElementById('quiz-streak-label');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const quizQuestionText = document.getElementById('quiz-question-text');
+    const quizOptionsGrid = document.getElementById('quiz-options-grid');
+    const quizQuestionBox = document.getElementById('quiz-question-box');
+    const quizResultBox = document.getElementById('quiz-result-box');
+    const quizRankTitle = document.getElementById('quiz-rank-title');
+    const quizScoreSummary = document.getElementById('quiz-score-summary');
+    const quizRestartBtn = document.getElementById('quiz-restart-btn');
+
+    function initQuiz() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      quizStreak = 0;
+      if (quizQuestionBox) quizQuestionBox.classList.remove('hidden');
+      if (quizResultBox) quizResultBox.classList.add('hidden');
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = QUIZ[currentQuizIndex];
+      if (!q) return;
+
+      quizStepLabel.textContent = `QUESTION ${currentQuizIndex + 1} / ${QUIZ.length}`;
+      quizStreakLabel.textContent = `STREAK: ${quizStreak}`;
+      quizProgressBar.style.width = `${((currentQuizIndex + 1) / QUIZ.length) * 100}%`;
+      quizQuestionText.textContent = q.q;
+
+      quizOptionsGrid.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full text-left p-5 rounded-2xl border border-subtleBorder hover:border-white bg-card font-sub text-base text-white transition-all duration-200 flex items-center justify-between group';
+        btn.innerHTML = `
+          <span>${opt}</span>
+          <span class="w-6 h-6 rounded-full border border-subtleBorder flex items-center justify-center text-xs group-hover:border-white transition-colors">
+            ${String.fromCharCode(65 + idx)}
+          </span>
+        `;
+        btn.addEventListener('click', () => handleQuizAnswer(idx, btn));
+        quizOptionsGrid.appendChild(btn);
+      });
+    }
+
+    function handleQuizAnswer(selectedIdx, selectedBtn) {
+      const q = QUIZ[currentQuizIndex];
+      const allButtons = quizOptionsGrid.querySelectorAll('button');
+      allButtons.forEach(b => b.disabled = true);
+
+      if (selectedIdx === q.answer) {
+        // Correct
+        quizScore++;
+        quizStreak++;
+        selectedBtn.classList.remove('border-subtleBorder', 'bg-card');
+        selectedBtn.classList.add('border-white', 'bg-white', 'text-black');
+        selectedBtn.innerHTML += `
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        `;
+      } else {
+        // Incorrect
+        quizStreak = 0;
+        selectedBtn.classList.add('opacity-40', 'border-white/20');
+        // Highlight correct one softly
+        allButtons[q.answer].classList.add('border-white', 'text-white');
+      }
+
+      setTimeout(() => {
+        currentQuizIndex++;
+        if (currentQuizIndex < QUIZ.length) {
+          loadQuestion();
+        } else {
+          showQuizResults();
+        }
+      }, 1000);
+    }
+
+    function showQuizResults() {
+      quizQuestionBox.classList.add('hidden');
+      quizResultBox.classList.remove('hidden');
+
+      quizScoreSummary.textContent = `Score: ${quizScore} / ${QUIZ.length} (${(quizScore/QUIZ.length)*100}% Accuracy)`;
+      
+      let rank = "BENCH WARMER";
+      if (quizScore >= 8) {
+        rank = "CERTIFIED BALL KNOWER";
+        // Confetti burst (White & Grey particles only)
+        try {
+          confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#FFFFFF', '#9A9A9A', '#CCCCCC', '#555555']
+          });
+        } catch(e) {}
+      } else if (quizScore >= 5) {
+        rank = "CASUAL FAN";
+      }
+      quizRankTitle.textContent = rank;
+    }
+
+    if (quizRestartBtn) {
+      quizRestartBtn.addEventListener('click', initQuiz);
+    }
+
+    // Render Ball Knowledge Gallery
+    function renderBallknowledgeGrid() {
+      const grid = document.getElementById('ballknowledge-grid');
+      if (!grid) return;
+      grid.innerHTML = BALLKNOWLEDGE.map((item, idx) => `
+        <div class="bg-card border border-subtleBorder rounded-3xl p-5 group hover:border-subtleBorderHover transition-all">
+          <div class="aspect-square rounded-2xl overflow-hidden mb-4 bg-black">
+            <img src="${item.src}" alt="Ball Knowledge ${idx}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+          </div>
+          <p class="font-sub text-xs text-muted leading-relaxed">${item.caption}</p>
+        </div>
+      `).join('');
+    }
+
+    // 12. Back To Top Action
+    document.getElementById('back-to-top').addEventListener('click', () => {
+      if (lenis) {
+        lenis.scrollTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
