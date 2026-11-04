@@ -47,11 +47,11 @@ export default function Navbar({
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/70 backdrop-blur-md border-b border-white/12 ${
+        className={`fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/75 backdrop-blur-md border-b border-white/12 ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 h-20 md:h-24 flex items-center justify-between gap-8">
+        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 md:px-12 h-18 md:h-24 flex items-center justify-between gap-3 sm:gap-6">
           {/* Zone 1: Brand Wordmark with Logo Emblem */}
           <a
             href="#/"
@@ -59,17 +59,17 @@ export default function Navbar({
               e.preventDefault();
               handleLinkClick('#/');
             }}
-            className="group flex items-center space-x-3.5 whitespace-nowrap shrink-0 text-decoration-none"
+            className="group flex items-center space-x-2.5 sm:space-x-3.5 whitespace-nowrap shrink text-decoration-none min-w-0"
           >
             {/* Logo Avatar Badge */}
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-white/30 group-hover:border-white transition-all shrink-0 bg-black shadow-md group-hover:scale-105">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-white/30 group-hover:border-white transition-all shrink-0 bg-black shadow-md group-hover:scale-105">
               <img
                 src={SITE_CONFIG.logoImg}
                 alt="Billa University Emblem"
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="font-display text-2xl md:text-3xl tracking-tight text-white uppercase group-hover:text-white/90 transition-colors">
+            <span className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-white uppercase group-hover:text-white/90 transition-colors truncate">
               BILLA UNIVERSITY
             </span>
           </a>
@@ -102,21 +102,21 @@ export default function Navbar({
           </nav>
 
           {/* Zone 3: B&W Toggle & Mobile Trigger */}
-          <div className="flex items-center space-x-4 shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
             {/* Grayscale Background Toggle */}
             <button
               onClick={onToggleGrayscaleBg}
               title="Toggle Background Monochromatic Filter"
-              className="flex items-center space-x-2 text-xs font-sub text-[#9A9A9A] hover:text-white px-3.5 py-1.5 border border-white/12 rounded-full transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 sm:space-x-2 text-xs font-sub text-[#9A9A9A] hover:text-white px-2.5 sm:px-3.5 py-1.5 border border-white/12 rounded-full transition-colors cursor-pointer"
             >
               <span className={`w-2 h-2 rounded-full ${isGrayscaleBg ? 'bg-white' : 'bg-[#9A9A9A]'}`} />
-              <span className="whitespace-nowrap font-mono">{isGrayscaleBg ? 'B&W 100%' : 'B&W OFF'}</span>
+              <span className="font-mono text-[11px] sm:text-xs">{isGrayscaleBg ? 'B&W' : 'COLOR'}</span>
             </button>
 
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-white p-2 focus:outline-none cursor-pointer"
+              className="md:hidden text-white p-1.5 sm:p-2 focus:outline-none cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

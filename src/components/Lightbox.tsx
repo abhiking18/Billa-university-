@@ -178,11 +178,11 @@ export default function Lightbox({
         <AnimatePresence>
           {showComments && (
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full lg:w-[380px] xl:w-[420px] h-[50vh] lg:h-full bg-[#111111] border border-white/15 rounded-2xl flex flex-col p-4 sm:p-5 shrink-0 shadow-2xl select-text"
+              className="w-full lg:w-[380px] xl:w-[420px] max-w-full h-[50vh] lg:h-full bg-[#111111] border border-white/15 rounded-2xl flex flex-col p-4 sm:p-5 shrink-0 shadow-2xl select-text"
             >
               {/* Comments Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-3">

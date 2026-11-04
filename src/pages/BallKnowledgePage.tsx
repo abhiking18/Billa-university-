@@ -68,9 +68,9 @@ export default function BallKnowledgePage({ onNavigate, onOpenLightbox }: BallKn
   };
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-10 md:py-16 select-none">
+    <section className="max-w-[1600px] w-full mx-auto px-5 sm:px-6 md:px-12 py-8 md:py-16 select-none overflow-x-hidden">
       {/* Breadcrumb / Back Link */}
-      <div className="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-[#9A9A9A] mb-8">
+      <div className="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-[#9A9A9A] mb-6 md:mb-8">
         <button
           onClick={() => onNavigate('#/')}
           className="hover:text-white transition-colors cursor-pointer"
@@ -82,38 +82,38 @@ export default function BallKnowledgePage({ onNavigate, onOpenLightbox }: BallKn
       </div>
 
       {/* Page Title */}
-      <div className="border-b border-white/12 pb-10 mb-16">
+      <div className="border-b border-white/12 pb-6 md:pb-10 mb-10 md:mb-16 w-full max-w-full">
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="font-display text-6xl md:text-9xl uppercase tracking-tight text-white"
+          className="font-display text-5xl sm:text-7xl md:text-9xl uppercase tracking-tight text-white break-words [overflow-wrap:break-word] max-w-full leading-none"
         >
           ELITE BALL KNOWLEDGE
         </motion.h1>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="font-sub text-lg md:text-2xl text-[#9A9A9A] font-semibold mt-2"
+          className="font-sub text-[17px] md:text-2xl text-[#9A9A9A] font-semibold mt-2"
         >
           Only real ones know.
         </motion.p>
       </div>
 
-      {/* Centered Large Dark Quiz Card with Animated Question Transitions */}
-      <div className="max-w-3xl mx-auto my-14 bg-[#111111] border border-white/12 rounded-3xl p-8 md:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden">
+      {/* Centered Large Dark Quiz Card with Animated Question Transitions (Vertical only to prevent sideways movement) */}
+      <div className="max-w-3xl w-full mx-auto my-10 md:my-14 bg-[#111111] border border-white/12 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden">
         <AnimatePresence mode="wait">
           {!quizFinished ? (
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Top Streak & Progress */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-8 text-xs font-sub uppercase tracking-wider">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4 md:pb-6 mb-6 md:mb-8 text-xs font-sub uppercase tracking-wider">
                 <div className="flex items-center space-x-3">
                   <span className="text-white font-semibold">
                     QUESTION {currentIndex + 1} / {QUIZ_DATA.length}
@@ -164,9 +164,9 @@ export default function BallKnowledgePage({ onNavigate, onOpenLightbox }: BallKn
                       whileTap={!isAnswered ? { scale: 0.98 } : {}}
                       onClick={() => handleSelectOption(idx)}
                       disabled={isAnswered}
-                      className={`w-full text-left p-5 md:p-6 rounded-2xl border font-sub text-base transition-all duration-200 flex items-center justify-between group cursor-pointer ${btnStyle}`}
+                      className={`w-full text-left p-4 sm:p-5 md:p-6 min-h-[56px] rounded-xl md:rounded-2xl border font-sub text-base transition-all duration-200 flex items-center justify-between group cursor-pointer ${btnStyle}`}
                     >
-                      <span className="font-medium pr-3">{option}</span>
+                      <span className="font-medium pr-3 text-base">{option}</span>
                       <span
                         className={`w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-xs font-mono shrink-0 ${
                           isAnswered && idx === currentQuestion.answer
@@ -191,30 +191,28 @@ export default function BallKnowledgePage({ onNavigate, onOpenLightbox }: BallKn
             /* Quiz Results View with Animation */
             <motion.div
               key="result"
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="text-center py-10 space-y-6"
+              className="text-center py-6 sm:py-10 space-y-5 md:space-y-6"
             >
-              <span className="text-xs font-sub uppercase tracking-[0.3em] text-[#9A9A9A] block font-mono">
+              <span className="text-xs font-sub uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9A9A9A] block font-mono">
                 EXAMINATION CONCLUDED
               </span>
-              <h2 className="font-display text-5xl md:text-7xl uppercase text-white tracking-tight">
+              <h2 className="font-display text-4xl sm:text-5xl md:text-7xl uppercase text-white tracking-tight break-words [overflow-wrap:break-word] max-w-full">
                 {getRank()}
               </h2>
               <p className="font-sub text-[#9A9A9A] text-lg md:text-xl">
                 Score: {score} / {QUIZ_DATA.length} ({Math.round((score / QUIZ_DATA.length) * 100)}% Accuracy)
               </p>
 
-              <div className="pt-8">
-                <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
+              <div className="pt-6 md:pt-8 w-full flex justify-center">
+                <button
                   onClick={restartQuiz}
-                  className="btn-luxury-primary h-16 md:h-18 px-10 rounded-full font-sub font-semibold text-base uppercase tracking-wider cursor-pointer"
+                  className="btn-luxury-primary w-full sm:w-auto min-h-[56px] md:h-18 px-10 rounded-full font-sub font-semibold text-base md:text-lg uppercase tracking-wider cursor-pointer justify-center"
                 >
                   <span className="relative z-10">Retake Examination</span>
-                </motion.button>
+                </button>
               </div>
             </motion.div>
           )}
@@ -222,26 +220,26 @@ export default function BallKnowledgePage({ onNavigate, onOpenLightbox }: BallKn
       </div>
 
       {/* Ball Knowledge Showcase Reel (Full Color Vibrant Imagery) */}
-      <div className="my-24 border-t border-white/12 pt-16">
-        <div className="flex items-center justify-between mb-10">
+      <div className="my-16 md:my-24 border-t border-white/12 pt-10 md:pt-16 w-full max-w-full overflow-hidden">
+        <div className="flex items-center justify-between mb-6 md:mb-10">
           <div>
-            <span className="text-xs font-sub uppercase tracking-[0.25em] text-[#9A9A9A] block mb-1">
+            <span className="text-xs font-sub uppercase tracking-[0.2em] md:tracking-[0.25em] text-[#9A9A9A] block mb-1">
               TACTICAL ARCHIVES
             </span>
-            <h3 className="font-display text-4xl md:text-6xl uppercase text-white">
+            <h3 className="font-display text-3xl sm:text-4xl md:text-6xl uppercase text-white">
               BALL ARCHIVE REEL
             </h3>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full max-w-full">
           {BALLKNOWLEDGE_DATA.map((item) => (
             <motion.div
               key={item.id}
               onClick={() => onOpenLightbox && onOpenLightbox(200 + item.id)}
               data-cursor="Inspect"
               whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              className="bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-5 group transition-all duration-300 shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(255,255,255,0.06)] cursor-pointer"
+              className="bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-2xl md:rounded-3xl p-5 group transition-all duration-300 shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(255,255,255,0.06)] cursor-pointer w-full max-w-full"
             >
               <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-black relative">
                 <img

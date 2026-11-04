@@ -16,12 +16,33 @@
   --color-border-hover: rgba(255, 255, 255, 0.35);
 }
 
+/* Universal Box Sizing & Fluid Overflow Containment */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
 /* Global Monochrome Rules */
 html {
   background-color: #000000;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  position: relative;
+  touch-action: pan-y;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -29,16 +50,33 @@ body {
   color: #FFFFFF;
   margin: 0;
   padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  position: relative;
+  touch-action: pan-y;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Fixed Background Layer with phone safety */
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  position: relative;
+  min-height: 100svh;
+}
+
+/* Fixed Background Layer with phone safety - No 100vw, no jitter */
 .bg-fixed-layer {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 100svh;
   height: 100dvh;
   background-size: cover;
   background-position: center center;
@@ -51,16 +89,29 @@ body {
 .bg-gradient-scrim {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 100svh;
   height: 100dvh;
   background: linear-gradient(180deg, rgba(0,0,0,0.50) 0%, rgba(10,10,10,0.85) 65%, #000000 100%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Custom Cursor */
-@media (pointer: fine) {
+/* Completely hide custom cursor dots and rings on any touch or coarse pointer screen */
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Custom Cursor (Desktop Only) */
+@media (hover: hover) and (pointer: fine) {
   .custom-cursor-dot, .custom-cursor-ring {
     pointer-events: none;
     position: fixed;

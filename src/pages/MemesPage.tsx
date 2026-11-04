@@ -86,9 +86,9 @@ export default function MemesPage({
   };
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-10 md:py-16 select-none">
+    <section className="max-w-[1600px] w-full mx-auto px-5 sm:px-6 md:px-12 py-8 md:py-16 select-none overflow-x-hidden">
       {/* Breadcrumb / Back Link */}
-      <div className="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-[#9A9A9A] mb-8">
+      <div className="flex items-center space-x-3 text-xs font-sub uppercase tracking-[0.2em] text-[#9A9A9A] mb-6 md:mb-8">
         <button
           onClick={() => onNavigate('#/')}
           className="hover:text-white transition-colors cursor-pointer"
@@ -100,31 +100,28 @@ export default function MemesPage({
       </div>
 
       {/* Page Title & Upload Action */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/12 pb-10 gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/12 pb-6 md:pb-10 gap-6 w-full max-w-full">
         <div>
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-display text-6xl md:text-9xl uppercase tracking-tight text-white"
+            className="font-display text-5xl sm:text-7xl md:text-9xl uppercase tracking-tight text-white break-words [overflow-wrap:break-word] max-w-full leading-none"
           >
             MEMES
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="font-sub text-lg md:text-2xl text-[#9A9A9A] font-semibold mt-2"
+            className="font-sub text-[17px] md:text-2xl text-[#9A9A9A] font-semibold mt-2"
           >
             Certified productivity killers.
           </motion.p>
         </div>
 
         {/* Upload Meme Button (FileReader) */}
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-        >
+        <div className="w-full sm:w-auto">
           <input
             type="file"
             ref={fileInputRef}
@@ -135,14 +132,14 @@ export default function MemesPage({
           <button
             onClick={() => fileInputRef.current?.click()}
             data-cursor="Upload"
-            className="btn-luxury-primary h-14 md:h-16 px-8 rounded-full inline-flex items-center space-x-3 font-sub text-sm font-semibold tracking-wider uppercase cursor-pointer"
+            className="btn-luxury-primary w-full sm:w-auto min-h-[56px] md:h-16 px-8 rounded-full inline-flex items-center justify-center space-x-3 font-sub text-base font-semibold tracking-wider uppercase cursor-pointer"
           >
             <svg className="w-4 h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
             <span className="relative z-10">Upload Meme</span>
           </button>
-        </motion.div>
+        </div>
       </div>
 
       {/* Featured Meme Slider at top (Full Color Vibrant Imagery) */}
@@ -211,15 +208,15 @@ export default function MemesPage({
       </div>
 
       {/* Category Filter Tabs with Animated Active Indicator */}
-      <div className="flex items-center justify-between flex-wrap gap-4 mb-12">
-        <div className="relative inline-flex p-1.5 bg-[#111111] border border-white/12 rounded-full">
+      <div className="flex items-center justify-between flex-wrap gap-4 mb-8 md:mb-12 w-full max-w-full">
+        <div className="relative inline-flex flex-wrap p-1 md:p-1.5 bg-[#111111] border border-white/12 rounded-2xl md:rounded-full gap-1">
           {categories.map((cat) => {
             const active = selectedCategory === cat;
             return (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`relative z-10 px-6 py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold transition-all duration-300 cursor-pointer ${
+                className={`relative z-10 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-sub uppercase font-semibold transition-all duration-300 cursor-pointer ${
                   active ? 'bg-white text-black shadow-md' : 'text-[#9A9A9A] hover:text-white'
                 }`}
               >
@@ -234,10 +231,10 @@ export default function MemesPage({
         </span>
       </div>
 
-      {/* Grid of Meme Cards (Animated Reordering & Full Color Imagery) */}
+      {/* Grid of Meme Cards (Single-column on mobile, gap-4, full-width) */}
       <motion.div
         layout
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full max-w-full"
       >
         <AnimatePresence mode="popLayout">
           {filteredMemes.map((meme) => {
@@ -246,12 +243,12 @@ export default function MemesPage({
               <motion.div
                 key={meme.id}
                 layout
-                initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.92 }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                className="group bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(255,255,255,0.06)]"
+                className="group bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-2xl md:rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(255,255,255,0.06)] w-full max-w-full"
               >
                 <div>
                   <div

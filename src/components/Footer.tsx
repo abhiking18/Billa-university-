@@ -6,8 +6,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-auto border-t border-white/12 bg-black/90 backdrop-blur-md relative z-20 select-none">
-      <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="mt-auto border-t border-white/12 bg-black/90 backdrop-blur-md relative z-20 select-none w-full max-w-full overflow-hidden">
+      <div className="max-w-[1600px] w-full mx-auto px-5 sm:px-6 md:px-12 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center space-x-3.5">
           <div className="w-7 h-7 rounded-full overflow-hidden border border-white/20 bg-black shrink-0">
             <img

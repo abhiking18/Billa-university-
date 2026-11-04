@@ -95,8 +95,19 @@ export default function App() {
     })),
   ];
 
-  // 1. Initialize Lenis Smooth Scrolling
+  // 1. Initialize Lenis Smooth Scrolling (Desktop Only - Native scrolling on touch devices)
   useEffect(() => {
+    const isTouch =
+      typeof window === 'undefined' ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.innerWidth < 768 ||
+      window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+    if (isTouch) {
+      return;
+    }
+
     try {
       const lenis = new Lenis({
         duration: 1.2,
@@ -262,7 +273,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-white selection:text-black">
+    <div className="relative w-full max-w-full overflow-x-hidden overflow-x-clip min-h-[100svh] bg-black text-white selection:bg-white selection:text-black">
       {/* 1. Preloader */}
       {!preloaderFinished && (
         <Preloader onComplete={() => setPreloaderFinished(true)} />
@@ -280,21 +291,24 @@ export default function App() {
       {/* 4. Page Wipe Transition Curtain */}
       <PageCurtain isWiping={isWiping} />
 
-      {/* 5. Fixed Full-Screen Background Photo Layer */}
-      <div
-        className="bg-fixed-layer"
-        style={{
-          backgroundImage: `url('${SITE_CONFIG.backgroundImg}')`,
-          filter: `blur(${SITE_CONFIG.backgroundBlur}) ${
-            isGrayscaleBg ? 'grayscale(100%)' : 'grayscale(0%)'
-          }`,
-        }}
-      />
-      {/* Fixed Gradient Scrim (50% black at top fading to #000000 at bottom) */}
-      <div className="bg-gradient-scrim" />
+      {/* 5. Fixed Full-Screen Background Photo Layer (No scale, no parallax, stays still while scrolling) */}
+      <div className="fixed inset-0 w-full max-w-full h-full -z-10 pointer-events-none overflow-hidden select-none">
+        <img
+          src={SITE_CONFIG.backgroundImg}
+          alt=""
+          className="w-full h-full object-cover transition-all duration-300"
+          style={{
+            filter: `blur(${SITE_CONFIG.backgroundBlur}) ${
+              isGrayscaleBg ? 'grayscale(100%)' : 'grayscale(0%)'
+            }`,
+          }}
+        />
+        {/* Dark overlay: 50% black at top fading to #000000 at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-[#0A0A0A]/80 to-black pointer-events-none" />
+      </div>
 
       {/* 6. Active Frame Viewport */}
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col min-h-[100svh] w-full max-w-full overflow-x-hidden overflow-x-clip">
         <Navbar
           currentRoute={currentRoute}
           isGrayscaleBg={isGrayscaleBg}
@@ -303,7 +317,7 @@ export default function App() {
         />
 
         {/* Dynamic Route Content */}
-        <main className="flex-grow pt-20 md:pt-24">
+        <main className="flex-grow pt-20 md:pt-24 w-full max-w-full overflow-x-hidden overflow-x-clip">
           {currentRoute === '#/' && (
             <HomePage
               onNavigate={handleNavigate}

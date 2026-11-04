@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
     <title>BILLA UNIVERSITY — Luxury Monochrome Archive</title>
     <meta name="description" content="High-end luxury monochrome creative platform for curated memes, brainrot archives, and elite ball knowledge." />
     <meta property="og:title" content="BILLA UNIVERSITY — Luxury Monochrome Archive" />
@@ -17,9 +17,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+      html, body, #root {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        overflow-x: clip;
+        position: relative;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
   </head>
-  <body class="bg-black text-white antialiased selection:bg-white selection:text-black overflow-x-hidden">
-    <div id="root"></div>
+  <body class="bg-black text-white antialiased selection:bg-white selection:text-black w-full max-w-full overflow-x-hidden">
+    <div id="root" class="w-full max-w-full overflow-x-hidden"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

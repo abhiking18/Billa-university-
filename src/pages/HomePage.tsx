@@ -65,57 +65,55 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden overflow-x-clip">
       {/* ==================================================
           1. HERO SECTION (Full Viewport, Spacious, Awwwards Grade)
           ================================================== */}
-      <section className="min-h-[88vh] md:min-h-[94vh] max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col justify-between py-12 md:py-20 select-none">
+      <section className="min-h-[82svh] md:min-h-[90svh] max-w-[1600px] w-full mx-auto px-5 sm:px-6 md:px-12 flex flex-col justify-between py-8 md:py-20 select-none overflow-x-hidden">
         {/* Top subtle sector badges */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-between items-start pt-4 text-xs md:text-sm font-sub tracking-[0.25em] text-[#9A9A9A] uppercase"
+          className="flex justify-between items-start pt-2 md:pt-4 text-xs md:text-sm font-sub tracking-[0.2em] md:tracking-[0.25em] text-[#9A9A9A] uppercase"
         >
           <span>SEMESTER 2026</span>
-          <span>HIGH-CONSEQUENCE ARCHIVE</span>
+          <span className="text-right">HIGH-CONSEQUENCE ARCHIVE</span>
         </motion.div>
 
         {/* Hero Headline and One-Line Lead */}
-        <div className="my-auto py-10 md:py-16">
+        <div className="my-auto py-8 md:py-16 w-full max-w-full">
           <motion.div
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full max-w-full overflow-hidden"
           >
-            <h1 className="font-display text-[clamp(60px,13vw,210px)] leading-[0.86] tracking-tight text-white uppercase select-none">
+            <h1 className="font-display text-[clamp(40px,11vw,72px)] md:text-[clamp(64px,11vw,160px)] leading-none tracking-tight text-white uppercase select-none break-words [overflow-wrap:break-word] max-w-full">
               BILLA UNIVERSITY
             </h1>
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="font-sub text-lg md:text-2xl text-[#9A9A9A] mt-6 max-w-2xl font-semibold tracking-tight"
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="font-sub text-[17px] md:text-2xl text-[#9A9A9A] mt-4 md:mt-6 max-w-2xl font-semibold tracking-tight"
           >
             Memes. Brainrot. Ball knowledge.
           </motion.p>
 
-          {/* Large Luxury Action Buttons */}
+          {/* Large Luxury Action Buttons (Full width on mobile, min 56px height, 18px text) */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-12 flex flex-wrap gap-5 items-center"
+            transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-5 items-stretch sm:items-center w-full max-w-md sm:max-w-none"
           >
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            <button
               onClick={() => onNavigate('#/memes')}
               data-cursor="Open"
-              className="btn-luxury-primary h-16 md:h-20 px-10 md:px-12 rounded-full font-sub font-semibold text-lg md:text-xl tracking-wide space-x-3 group"
+              className="btn-luxury-primary w-full sm:w-auto min-h-[56px] md:h-20 px-8 md:px-12 rounded-full font-sub font-semibold text-lg md:text-xl tracking-wide space-x-3 group justify-center cursor-pointer"
             >
               <span className="relative z-10">Memes</span>
               <svg
@@ -126,14 +124,12 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </motion.button>
+            </button>
 
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            <button
               onClick={() => onNavigate('#/brainrot')}
               data-cursor="Explore"
-              className="btn-luxury-secondary h-16 md:h-20 px-10 md:px-12 rounded-full font-sub font-semibold text-lg md:text-xl tracking-wide space-x-3 group"
+              className="btn-luxury-secondary w-full sm:w-auto min-h-[56px] md:h-20 px-8 md:px-12 rounded-full font-sub font-semibold text-lg md:text-xl tracking-wide space-x-3 group justify-center cursor-pointer"
             >
               <span className="relative z-10">Explore</span>
               <svg
@@ -144,7 +140,7 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
               </svg>
-            </motion.button>
+            </button>
           </motion.div>
         </div>
 
@@ -152,15 +148,15 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="flex items-center justify-between border-t border-white/12 pt-6"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex items-center justify-between border-t border-white/12 pt-4 md:pt-6"
         >
-          <span className="text-xs font-sub uppercase tracking-[0.25em] text-[#9A9A9A]">
+          <span className="text-xs font-sub uppercase tracking-[0.2em] md:tracking-[0.25em] text-[#9A9A9A]">
             Curated archive sectors
           </span>
           <div className="flex items-center space-x-2 text-xs font-sub uppercase tracking-widest text-[#9A9A9A]">
             <span>Scroll</span>
-            <div className="w-4 h-8 border border-white/30 rounded-full flex justify-center p-1">
+            <div className="w-4 h-7 md:h-8 border border-white/30 rounded-full flex justify-center p-1">
               <div className="w-1 h-2 bg-white rounded-full animate-bounce" />
             </div>
           </div>
@@ -168,47 +164,47 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
       </section>
 
       {/* ==================================================
-          2. HUGE OUTLINED MARQUEE (Direction reverses on scroll)
+          2. HUGE OUTLINED MARQUEE (Container strictly 100% overflow hidden)
           ================================================== */}
-      <section className="py-12 md:py-16 border-y border-white/12 bg-black/50 overflow-hidden select-none">
+      <section className="w-full max-w-full py-8 md:py-14 border-y border-white/12 bg-black/50 overflow-hidden select-none">
         <div
           ref={marqueeTrackRef}
-          className="flex whitespace-nowrap will-change-transform font-display text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter"
+          className="flex whitespace-nowrap will-change-transform font-display text-3xl sm:text-4xl md:text-7xl lg:text-8xl uppercase tracking-tighter"
         >
-          <span className="marquee-outline-text mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
-          <span className="marquee-outline-text mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
-          <span className="marquee-outline-text mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
-          <span className="marquee-outline-text mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+          <span className="marquee-outline-text mx-4 md:mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+          <span className="marquee-outline-text mx-4 md:mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+          <span className="marquee-outline-text mx-4 md:mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
+          <span className="marquee-outline-text mx-4 md:mx-8">MEMES • BRAINROT • BALL KNOWLEDGE •</span>
         </div>
       </section>
 
       {/* ==================================================
           3. THREE LARGE FEATURE PANELS (All images directly clickable)
           ================================================== */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-36 space-y-16">
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/12 pb-8 gap-4">
+      <section className="max-w-[1600px] w-full mx-auto px-5 sm:px-6 md:px-12 py-14 md:py-36 space-y-12 md:space-y-16 overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/12 pb-6 md:pb-8 gap-4">
           <div>
-            <span className="text-xs font-sub uppercase tracking-[0.25em] text-[#9A9A9A] block mb-2">
+            <span className="text-xs font-sub uppercase tracking-[0.2em] md:tracking-[0.25em] text-[#9A9A9A] block mb-2">
               ACADEMIC DIVISIONS
             </span>
-            <h2 className="font-display text-5xl md:text-7xl uppercase text-white tracking-tight">
+            <h2 className="font-display text-4xl sm:text-5xl md:text-7xl uppercase text-white tracking-tight">
               CORE DOMAINS
             </h2>
           </div>
-          <p className="font-sub text-[#9A9A9A] text-base md:text-lg max-w-md">
+          <p className="font-sub text-[#9A9A9A] text-[17px] md:text-lg max-w-md">
             Rigorous peer-reviewed internet phenomena.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-full">
           {/* Panel 1: Memes */}
           <motion.div
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="group relative bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-all duration-500 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.08)]"
+            whileHover={{ y: -6, transition: { duration: 0.3 } }}
+            className="group relative bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.08)] w-full max-w-full"
           >
             <div className="shimmer-line" />
             <div>
-              <div className="flex justify-between items-center text-xs font-sub text-[#9A9A9A] tracking-widest uppercase mb-8">
+              <div className="flex justify-between items-center text-xs font-sub text-[#9A9A9A] tracking-widest uppercase mb-6 md:mb-8">
                 <span>SECTOR 01</span>
                 <span>12+ SPECIMENS</span>
               </div>
@@ -254,19 +250,19 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
 
           {/* Panel 2: Brainrot */}
           <motion.div
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="group relative bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-all duration-500 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.08)]"
+            whileHover={{ y: -6, transition: { duration: 0.3 } }}
+            className="group relative bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.08)] w-full max-w-full"
           >
             <div className="shimmer-line" />
             <div>
-              <div className="flex justify-between items-center text-xs font-sub text-[#9A9A9A] tracking-widest uppercase mb-8">
+              <div className="flex justify-between items-center text-xs font-sub text-[#9A9A9A] tracking-widest uppercase mb-6 md:mb-8">
                 <span>SECTOR 02</span>
                 <span>SYNAPSE DECAY</span>
               </div>
               <div
                 onClick={() => onOpenMemeLightbox(4)}
                 data-cursor="Inspect"
-                className="aspect-[4/3] rounded-2xl overflow-hidden mb-8 bg-black border border-white/5 relative cursor-pointer group/img"
+                className="aspect-[4/3] rounded-2xl overflow-hidden mb-6 md:mb-8 bg-black border border-white/5 relative cursor-pointer group/img"
               >
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym"
@@ -283,9 +279,9 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
               >
                 BRAINROT
               </h3>
-              <p className="font-sub text-base text-[#9A9A9A]">Your brain cells left the chat.</p>
+              <p className="font-sub text-[17px] text-[#9A9A9A]">Your brain cells left the chat.</p>
             </div>
-            <div className="mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
+            <div className="mt-8 md:mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
               <button
                 onClick={() => onNavigate('#/brainrot')}
                 className="inline-flex items-center text-sm font-sub uppercase tracking-wider text-white group-hover:translate-x-1.5 transition-transform font-semibold cursor-pointer"
@@ -305,19 +301,19 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
 
           {/* Panel 3: Elite Ball Knowledge */}
           <motion.div
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="group relative bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-8 md:p-10 flex flex-col justify-between transition-all duration-500 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.08)]"
+            whileHover={{ y: -6, transition: { duration: 0.3 } }}
+            className="group relative bg-[#111111] hover:bg-[#1A1A1A] border border-white/12 hover:border-white/35 rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.08)] w-full max-w-full"
           >
             <div className="shimmer-line" />
             <div>
-              <div className="flex justify-between items-center text-xs font-sub text-[#9A9A9A] tracking-widest uppercase mb-8">
+              <div className="flex justify-between items-center text-xs font-sub text-[#9A9A9A] tracking-widest uppercase mb-6 md:mb-8">
                 <span>SECTOR 03</span>
                 <span>10 ROUND TEST</span>
               </div>
               <div
                 onClick={() => onOpenMemeLightbox(3)}
                 data-cursor="Inspect"
-                className="aspect-[4/3] rounded-2xl overflow-hidden mb-8 bg-black border border-white/5 relative cursor-pointer group/img"
+                className="aspect-[4/3] rounded-2xl overflow-hidden mb-6 md:mb-8 bg-black border border-white/5 relative cursor-pointer group/img"
               >
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk"
@@ -334,9 +330,9 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
               >
                 ELITE BALL KNOWLEDGE
               </h3>
-              <p className="font-sub text-base text-[#9A9A9A]">Only real ones know.</p>
+              <p className="font-sub text-[17px] text-[#9A9A9A]">Only real ones know.</p>
             </div>
-            <div className="mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
+            <div className="mt-8 md:mt-10 pt-6 border-t border-white/10 flex items-center justify-between">
               <button
                 onClick={() => onNavigate('#/ballknowledge')}
                 className="inline-flex items-center text-sm font-sub uppercase tracking-wider text-white group-hover:translate-x-1.5 transition-transform font-semibold cursor-pointer"
@@ -359,7 +355,7 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
       {/* ==================================================
           4. TRENDING SLIDER (Ultra Compact Mini-Card Tray)
           ================================================== */}
-      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-12 py-6 sm:py-10 md:py-16 border-t border-white/12 select-none">
+      <section className="max-w-[1600px] w-full mx-auto px-5 sm:px-6 md:px-12 py-6 sm:py-10 md:py-16 border-t border-white/12 select-none overflow-hidden">
         <div className="flex items-center justify-between mb-3 md:mb-6">
           <div>
             <span className="text-[8px] md:text-[10px] font-sub uppercase tracking-[0.25em] text-[#9A9A9A] block mb-0.5">

@@ -8,8 +8,14 @@ export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Only enable on desktop pointer devices
-    if (!window.matchMedia('(pointer: fine)').matches) return;
+    // Completely disable on mobile and touch devices
+    const isTouch =
+      typeof window === 'undefined' ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+    if (isTouch) return;
 
     let targetX = -100;
     let targetY = -100;
@@ -18,6 +24,10 @@ export default function CustomCursor() {
     let rafId: number;
 
     const onMouseMove = (e: MouseEvent) => {
+      // Ignore simulated mouse events from touch
+      if ((e as unknown as { sourceCapabilities?: { firesTouchEvents?: boolean } }).sourceCapabilities?.firesTouchEvents) {
+        return;
+      }
       targetX = e.clientX;
       targetY = e.clientY;
       setPosition({ x: targetX, y: targetY });
