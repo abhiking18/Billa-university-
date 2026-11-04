@@ -8,6 +8,12 @@ import {
   MemeItem,
   CommentItem,
 } from './data/config';
+import {
+  subscribeToMemes,
+  toggleMemeLikeInFirestore,
+  deleteMemeFromFirestore,
+  getDeviceLikedMemes,
+} from './services/firebase';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
@@ -19,7 +25,7 @@ import MemesPage from './pages/MemesPage';
 import BrainrotPage from './pages/BrainrotPage';
 import BallKnowledgePage from './pages/BallKnowledgePage';
 
-const INITIAL_COMMENTS: Record<number, CommentItem[]> = {
+const INITIAL_COMMENTS: Record<string | number, CommentItem[]> = {
   1: [
     {
       id: 'c-init-1',
@@ -57,12 +63,39 @@ export default function App() {
   // Scroll Progress Percentage
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Memes State (Supports Local Upload and Likes)
-  const [memesList, setMemesList] = useState<MemeItem[]>(MEMES_DATA);
-  const [likedMemes, setLikedMemes] = useState<Set<number>>(new Set());
+  // Firestore Real-Time Memes State
+  const [firestoreMemes, setFirestoreMemes] = useState<MemeItem[]>([]);
+  const [isLoadingMemes, setIsLoadingMemes] = useState(true);
+  const [memesLoadError, setMemesLoadError] = useState<string | null>(null);
+
+  // Device-remembered real likes set (No fake counters)
+  const [likedMemes, setLikedMemes] = useState<Set<string>>(() => getDeviceLikedMemes());
+
+  // Real-Time onSnapshot Firestore Listener
+  useEffect(() => {
+    setIsLoadingMemes(true);
+    const unsubscribe = subscribeToMemes(
+      (fetched) => {
+        setFirestoreMemes(fetched);
+        setIsLoadingMemes(false);
+        setMemesLoadError(null);
+      },
+      (errMsg) => {
+        setIsLoadingMemes(false);
+        setMemesLoadError(errMsg);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
+  // Combined Memes: uploaded memes first, then starter default memes
+  const combinedMemesList: MemeItem[] = [
+    ...firestoreMemes,
+    ...MEMES_DATA,
+  ];
 
   // Real Comments State (Stored & Persisted locally)
-  const [commentsMap, setCommentsMap] = useState<Record<number, CommentItem[]>>(() => {
+  const [commentsMap, setCommentsMap] = useState<Record<string | number, CommentItem[]>>(() => {
     try {
       const stored = localStorage.getItem('billa_meme_comments');
       return stored ? JSON.parse(stored) : INITIAL_COMMENTS;
@@ -72,26 +105,26 @@ export default function App() {
   });
 
   // Lightbox State
-  const [lightboxMemeId, setLightboxMemeId] = useState<number | null>(null);
+  const [lightboxMemeId, setLightboxMemeId] = useState<string | number | null>(null);
 
   const lenisRef = useRef<Lenis | null>(null);
 
   // Synchronize master registry of all clickable specimens
   const allSpecimensList: MemeItem[] = [
-    ...memesList,
+    ...combinedMemesList,
     ...BRAINROT_DATA.map((b) => ({
       id: 100 + b.id,
       src: b.src,
       caption: `${b.title} — ${b.desc}`,
       category: 'Exams' as const,
-      likes: 850 + b.id * 120,
+      likes: 0,
     })),
     ...BALLKNOWLEDGE_DATA.map((k) => ({
       id: 200 + k.id,
       src: k.src,
       caption: `${k.title}: ${k.caption}`,
       category: 'Friends' as const,
-      likes: 1200 + k.id * 140,
+      likes: 0,
     })),
   ];
 
@@ -187,34 +220,43 @@ export default function App() {
     window.location.hash = route;
   };
 
-  // Like Meme Action
-  const handleLikeMeme = (id: number) => {
+  // Like Meme Action (Real increment in Firestore with device deduplication)
+  const handleLikeMeme = (id: string | number) => {
+    const strId = String(id);
+    const isCurrentlyLiked = likedMemes.has(strId);
+    toggleMemeLikeInFirestore(id, isCurrentlyLiked);
+
     setLikedMemes((prev) => {
       const next = new Set(prev);
-      const isAlreadyLiked = next.has(id);
-      if (isAlreadyLiked) {
-        next.delete(id);
+      if (isCurrentlyLiked) {
+        next.delete(strId);
       } else {
-        next.add(id);
+        next.add(strId);
       }
-
-      setMemesList((currentList) =>
-        currentList.map((m) =>
-          m.id === id ? { ...m, likes: m.likes + (isAlreadyLiked ? -1 : 1) } : m
-        )
-      );
-
       return next;
     });
+
+    // Optimistic UI update
+    setFirestoreMemes((prev) =>
+      prev.map((m) =>
+        String(m.id) === strId
+          ? { ...m, likes: Math.max(0, m.likes + (isCurrentlyLiked ? -1 : 1)) }
+          : m
+      )
+    );
   };
 
-  // Upload Meme Action
-  const handleUploadMeme = (newMeme: MemeItem) => {
-    setMemesList((prev) => [newMeme, ...prev]);
+  // Remove Meme Action (Removes document from Firestore)
+  const handleDeleteMeme = async (id: string | number) => {
+    const strId = String(id);
+    await deleteMemeFromFirestore(strId);
+    if (String(lightboxMemeId) === strId) {
+      setLightboxMemeId(null);
+    }
   };
 
   // Real Comments Add & Delete Handlers
-  const handleAddComment = (memeId: number, text: string, author?: string) => {
+  const handleAddComment = (memeId: string | number, text: string, author?: string) => {
     const newComment: CommentItem = {
       id: `c-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       author: author || 'Student_Scholar',
@@ -234,7 +276,7 @@ export default function App() {
     });
   };
 
-  const handleDeleteComment = (memeId: number, commentId: string) => {
+  const handleDeleteComment = (memeId: string | number, commentId: string) => {
     setCommentsMap((prev) => {
       const existing = prev[memeId] || [];
       const updated = {
@@ -253,10 +295,10 @@ export default function App() {
   // Lightbox Navigation
   const activeLightboxMeme =
     lightboxMemeId !== null
-      ? allSpecimensList.find((m) => m.id === lightboxMemeId) || null
+      ? allSpecimensList.find((m) => String(m.id) === String(lightboxMemeId)) || null
       : null;
   const currentLightboxIndex = activeLightboxMeme
-    ? allSpecimensList.findIndex((m) => m.id === activeLightboxMeme.id)
+    ? allSpecimensList.findIndex((m) => String(m.id) === String(activeLightboxMeme.id))
     : 0;
 
   const handleNextLightbox = () => {
@@ -337,12 +379,13 @@ export default function App() {
 
           {currentRoute === '#/memes' && (
             <MemesPage
-              memes={memesList}
+              memes={combinedMemesList}
               onNavigate={handleNavigate}
               onOpenLightbox={(id) => setLightboxMemeId(id)}
               onLikeMeme={handleLikeMeme}
-              onUploadMeme={handleUploadMeme}
               likedMemes={likedMemes}
+              isLoading={isLoadingMemes}
+              loadError={memesLoadError}
             />
           )}
 
@@ -374,10 +417,11 @@ export default function App() {
           onNext={handleNextLightbox}
           onPrev={handlePrevLightbox}
           onLike={handleLikeMeme}
-          isLiked={likedMemes.has(activeLightboxMeme.id)}
+          isLiked={likedMemes.has(String(activeLightboxMeme.id))}
           comments={commentsMap[activeLightboxMeme.id] || []}
           onAddComment={handleAddComment}
           onDeleteComment={handleDeleteComment}
+          onDeleteMeme={handleDeleteMeme}
         />
       )}
     </div>

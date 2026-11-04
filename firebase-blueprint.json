@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "Meme": {
+      "title": "Meme",
+      "description": "A curated university meme specimen uploaded to the archive.",
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string",
+          "description": "Compressed base64 data URL (under 700KB)",
+          "maxLength": 1000000
+        },
+        "caption": {
+          "type": "string",
+          "description": "Optional short meme description or punchline",
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "description": "Campus academic division category",
+          "enum": ["Classroom", "Exams", "Hostel", "Friends"]
+        },
+        "likes": {
+          "type": "integer",
+          "description": "Aggregated real user likes counter"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when specimen was uploaded"
+        }
+      },
+      "required": ["image", "caption", "category", "likes"]
+    }
+  },
+  "firestore": {
+    "/memes/{memeId}": {
+      "schema": "Meme",
+      "description": "Public shared collection of community uploaded meme specimens."
+    }
+  }
+}

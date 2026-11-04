@@ -9,7 +9,7 @@ import { MEMES_DATA } from '../data/config';
 
 interface HomePageProps {
   onNavigate: (route: string) => void;
-  onOpenMemeLightbox: (id: number) => void;
+  onOpenMemeLightbox: (id: string | number) => void;
 }
 
 export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePageProps) {
@@ -409,7 +409,11 @@ export default function HomePage({ onNavigate, onOpenMemeLightbox }: HomePagePro
                   {meme.caption}
                 </p>
                 <div className="mt-1 pt-1 border-t border-white/10 flex items-center justify-between text-[8px] sm:text-[9px] font-sub text-[#9A9A9A]">
-                  <span className="font-mono tabular-nums">{meme.likes}</span>
+                  {meme.likes > 0 ? (
+                    <span className="font-mono tabular-nums">{meme.likes}</span>
+                  ) : (
+                    <span className="text-[10px]">♡</span>
+                  )}
                   <span className="uppercase text-white tracking-widest text-[8px] group-hover:underline">Inspect</span>
                 </div>
               </div>

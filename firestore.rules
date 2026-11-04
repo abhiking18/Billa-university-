@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function incoming() {
+      return request.resource.data;
+    }
+    function existing() {
+      return resource.data;
+    }
+
+    // Memes collection
+    match /memes/{memeId} {
+      // 1. Anyone can read memes (Public Read)
+      allow read: if true;
+
+      // 2. Anyone can create/upload a meme under strict payload validation
+      allow create: if incoming().image is string
+                    && incoming().image.size() <= 1000000
+                    && incoming().caption is string
+                    && incoming().caption.size() <= 120
+                    && incoming().category in ['Classroom', 'Exams', 'Hostel', 'Friends']
+                    && incoming().likes == 0;
+
+      // 3. Anyone can like / unlike (atomically increments or decrements the likes number)
+      allow update: if incoming().diff(existing()).affectedKeys().hasOnly(['likes'])
+                    && incoming().likes is number
+                    && incoming().likes >= 0;
+
+      // 4. Anyone can delete uploaded memes (Client can enforce ADMIN_PIN if configured)
+      allow delete: if true;
+    }
+
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

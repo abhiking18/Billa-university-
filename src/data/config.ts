@@ -12,12 +12,15 @@ export interface CommentItem {
 }
 
 export interface MemeItem {
-  id: number;
+  id: string | number;
+  firestoreId?: string;
   src: string;
   caption: string;
   category: 'Classroom' | 'Exams' | 'Hostel' | 'Friends';
   likes: number;
   comments?: CommentItem[];
+  isUploaded?: boolean;
+  createdAt?: any;
 }
 
 export interface BrainrotItem {
@@ -55,91 +58,91 @@ export const SITE_CONFIG = {
   backgroundBlur: "2px",
 };
 
-// 12+ Curated Meme Specimen Records
+// 12+ Curated Meme Specimen Records (All real likes starting at 0)
 export const MEMES_DATA: MemeItem[] = [
   {
     id: 1,
     src: "/assets/aistudio/IMG_20261104_150301_747_32ecd421.jpg",
     caption: "Chancellor Billa presiding over the annual convocation with zero attendance record.",
     category: "Classroom",
-    likes: 3420,
+    likes: 0,
   },
   {
     id: 2,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh",
     caption: "Gadi lamborghini peele rang di menu kendi ay chala ve slowly.",
     category: "Classroom",
-    likes: 1840,
+    likes: 0,
   },
   {
     id: 3,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk",
     caption: "Contractor: Pehle itna chal ke dekho... pasand aaye toh aur banwa denge.",
     category: "Exams",
-    likes: 2490,
+    likes: 0,
   },
   {
     id: 4,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym",
     caption: "My thumb after scrolling reels continuously for 6 hours straight.",
     category: "Hostel",
-    likes: 3120,
+    likes: 0,
   },
   {
     id: 5,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuABAPsfutxv79aIqtxHRFAAM4rqBtB0pB913z6smOq7K4aio-3xk4g5ckSkXL1iboZNgYRZPmQ22NrQzbigvhCAQjpixRaKwIBOOuBiULwopphGdId-9U-PduMhRp_LSBx9eXQY7tcZtvjBhqKkiZN_T1e8s4He10fxNy1yQGsA_iHIAsDuLHgorHuHET11AyLtkv86pfUjVUXVawcGKEj1WvYDLu3AfGed78BxGocy0brb1Nk4hSde",
     caption: "Fridge me chill karti hui sabjiyan vs Palang ke niche pade hue aaloo.",
     category: "Hostel",
-    likes: 1980,
+    likes: 0,
   },
   {
     id: 6,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAKZIDjtXdjrFyKXnPIgH7vhCAYzpQSfFn5CskvBPoYhuy1tb0J3xQFs2XSLaBk7hvxBjIQrL9LSdt1HwCxYqX5_n1ITNtbrfCj5PZ4g5Df4WKvqPCkmvXPWvNaw68aID7VDykwXE9_HjQSc_13p3q4mkpAOTrmZ_R1U44hFa9ycV5qc0CX-6a5AQD8Ybs-8LzK0ybPKn9N9juT5r_SBj9uGfxdL0Lqw6jICao2w_wqCcQieiRLSyjt",
     caption: "Disclaimer: This video is not made for kids except Balraj Singh bhai's kids.",
     category: "Friends",
-    likes: 2150,
+    likes: 0,
   },
   {
     id: 7,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx",
     caption: "Uncle namak hai? Colgate hai? Toh usme se thoda sa de do.",
     category: "Friends",
-    likes: 3880,
+    likes: 0,
   },
   {
     id: 8,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD378aPF068mjTznWw7hHjcXtoZNvTOXm5fQ5uqHMDhz1eZiPCcrNo5NcjNSM7EJ6Bra12qkX12F15ZifS81TGPClC0GzQnxDSAbfZ9a7CaZV7tsLyxCRurOmPoCZC9fQhIJxL0Fcyu6d5R_YZuMlTGDmVSzo_lLbgDebdDCYHB9OjHVOZ49cEN0so23ilIOrSCK5ZEi2bTVrjfboB8t_xGTNnNQJOxM-tAWQhmVcT5dwhfYLGNZtQ7",
     caption: "Smug Chancellor Billa analyzing your GPA after 100 days of skipping lectures.",
     category: "Classroom",
-    likes: 4920,
+    likes: 0,
   },
   {
     id: 9,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_WvyUao5uMWdATFFVwNK3EwrVpMSa_3gVzvOLc0N1Z9W04Lx5ah9m7sX0jE3PsBeL8SWBcJr5JrV20tlPOP6HDZhL21BqgrKRQw_cpBR_tBv3Cd3KpZDxEfIZoC1BSTsJIWfHnYJEU4A80cry-fFnBe9I8sY-l9NSnC0RWZSckIRQLZcpLcGlXYLVy2NSvdlffkLsD-KcmQnHchOwBSWF3cS9s4wn2U25dIxGxm2-CPl1cP4u-Fym",
     caption: "Post-scroll digital fatigue protocol: trying to remember who won the 2011 world cup.",
     category: "Exams",
-    likes: 1205,
+    likes: 0,
   },
   {
     id: 10,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuVj0GCktf2RjmAj-gLM56vyapIMbwBV6qA-6bfiiU-Z9res6i6PqHcOxmmWua97JXYz6pvpaVj2ROrzIToCs62YaNOzzYxCzYrgglN8b5P2_Jj-Z0e8xgVWNnLSfHTBatubaThSF7A-Z0laa560w2YNsucdL_gTS8VO7nT7NkZxqf_mu6ieIU4lrIbSaq7O0tF_2GaAxlrfHUjE4828O6wDpDCNmqUT26Vt6Bb6qXowv96VVi5skk",
     caption: "Civil engineering viva defense: demo test segment evaluated and cleared.",
     category: "Exams",
-    likes: 2750,
+    likes: 0,
   },
   {
     id: 11,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10erwB3hH7KDpkO6u9BH3tTElVrpvrXXp4F_RKfhLZM9kKur2tf2UDcluF6--U4b1X1jrA-FnLBDDZ_YP_-2QlPNcnYMox_IfMUEyaEx3HVn-bK_Kerib4_S7KKUnZ2Yy27m3qvPdGLf8Z4-pHm8c29hB6iQPD0EcYbO-HqxEiIu4IAhcwT_1jTvdiMvoN78guOYPNjHbkCE_SmO6NheeRHLgPE7rrapK6F7mbGLyJnU0RLgfN_Fx",
     caption: "Hostel midnight trade negotiations: borrowing 20ml of shampoo for a lifetime.",
     category: "Hostel",
-    likes: 1670,
+    likes: 0,
   },
   {
     id: 12,
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBmNNo2iRDfsjqngQeJ17qRSs9sO1SCTXvKM4wqNW6XPMeBaqgELKKhUD_7H3NoOBbTNELlzfVD40SRcuVuHc6Fdxu57Ct6ST4ds0mImhs23Ws1Zjazz4RvA3w733z547SIphf-_KjNMGreWMru6Uzd5VaClmH00vnmia6v0iBpP-yytjyyf3Vkqa9NEeQYz0pnPH1IeZPs-8z3HDGp4luneaW4tvjbbEiv_c5G7f35OE-Hq98BFiTh",
     caption: "The final lap around campus before submission deadline at 11:59 PM.",
     category: "Friends",
-    likes: 5410,
+    likes: 0,
   },
 ];
 

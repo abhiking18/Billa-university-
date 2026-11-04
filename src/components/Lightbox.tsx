@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MemeItem, CommentItem } from '../data/config';
+import { ADMIN_PIN } from '../services/firebase';
 
 interface LightboxProps {
   meme: MemeItem | null;
@@ -9,11 +10,12 @@ interface LightboxProps {
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
-  onLike: (id: number) => void;
+  onLike: (id: string | number) => void;
   isLiked: boolean;
   comments: CommentItem[];
-  onAddComment: (memeId: number, text: string, author?: string) => void;
-  onDeleteComment?: (memeId: number, commentId: string) => void;
+  onAddComment: (memeId: string | number, text: string, author?: string) => void;
+  onDeleteComment?: (memeId: string | number, commentId: string) => void;
+  onDeleteMeme?: (id: string | number) => void;
 }
 
 export default function Lightbox({
@@ -28,11 +30,15 @@ export default function Lightbox({
   comments,
   onAddComment,
   onDeleteComment,
+  onDeleteMeme,
 }: LightboxProps) {
   const touchStartX = useRef<number | null>(null);
   const [commentText, setCommentText] = useState('');
   const [authorName, setAuthorName] = useState('');
   const [showComments, setShowComments] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [adminPinInput, setAdminPinInput] = useState('');
+  const [pinError, setPinError] = useState<string | null>(null);
   const commentsEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -108,6 +114,24 @@ export default function Lightbox({
         </div>
 
         <div className="flex items-center space-x-3">
+          {/* Delete Uploaded Meme Option with In-Page Confirmation */}
+          {meme.isUploaded && onDeleteMeme && (
+            <button
+              onClick={() => {
+                setPinError(null);
+                setAdminPinInput('');
+                setShowDeleteConfirm(true);
+              }}
+              className="px-3 py-1.5 rounded-full border text-xs font-sub uppercase tracking-wider flex items-center space-x-1.5 transition-colors cursor-pointer bg-black/60 text-[#9A9A9A] hover:text-white border-white/20 hover:border-white"
+              title="Delete this uploaded meme"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Delete</span>
+            </button>
+          )}
+
           {/* Toggle Comments Button */}
           <button
             onClick={() => setShowComments(!showComments)}
@@ -286,6 +310,7 @@ export default function Lightbox({
           <button
             onClick={() => onLike(meme.id)}
             className="flex items-center space-x-1.5 text-xs sm:text-sm text-white hover:text-white/80 transition-colors cursor-pointer"
+            title={isLiked ? 'Unlike meme' : 'Like meme'}
           >
             <svg
               className={`w-4 h-4 transition-transform ${isLiked ? 'fill-white stroke-white scale-110' : 'fill-none stroke-currentColor'}`}
@@ -293,7 +318,7 @@ export default function Lightbox({
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
-            <span className="font-mono tabular-nums">{meme.likes}</span>
+            {meme.likes > 0 && <span className="font-mono tabular-nums">{meme.likes}</span>}
           </button>
 
           {/* Comment Counter Button */}
@@ -310,6 +335,91 @@ export default function Lightbox({
           <span className="hidden md:inline font-mono text-[10px]">Press 'C' for comments</span>
         </div>
       </div>
+
+      {/* In-Page Delete Confirmation Dialog */}
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-md bg-[#111111] border border-white/20 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative select-text"
+            >
+              <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4 bg-black">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </div>
+
+              <h4 className="font-display text-2xl uppercase tracking-tight text-center text-white mb-2">
+                Delete This Meme?
+              </h4>
+              <p className="font-sub text-xs text-[#9A9A9A] text-center mb-6 leading-relaxed">
+                This will permanently remove this specimen from the shared database for all phones and viewers.
+              </p>
+
+              {ADMIN_PIN && ADMIN_PIN.trim() !== '' && (
+                <div className="mb-5">
+                  <label className="block text-[11px] font-sub uppercase tracking-wider text-[#9A9A9A] mb-1.5 font-semibold">
+                    Enter Admin PIN to Confirm
+                  </label>
+                  <input
+                    type="password"
+                    maxLength={16}
+                    placeholder="PIN Code"
+                    value={adminPinInput}
+                    onChange={(e) => {
+                      setAdminPinInput(e.target.value);
+                      setPinError(null);
+                    }}
+                    className="w-full bg-black/60 border border-white/15 focus:border-white rounded-xl px-4 py-2.5 text-sm text-white placeholder-[#9A9A9A]/50 focus:outline-none transition-colors"
+                  />
+                </div>
+              )}
+
+              {pinError && (
+                <div className="mb-4 p-2.5 bg-black border border-white/30 rounded-xl text-xs text-white text-center">
+                  {pinError}
+                </div>
+              )}
+
+              <div className="flex items-center justify-end space-x-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDeleteConfirm(false);
+                    setPinError(null);
+                  }}
+                  className="w-1/2 py-3 rounded-full text-xs font-sub uppercase tracking-wider text-[#9A9A9A] hover:text-white border border-white/15 hover:border-white transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (ADMIN_PIN && ADMIN_PIN.trim() !== '') {
+                      if (adminPinInput.trim() !== ADMIN_PIN.trim()) {
+                        setPinError('Incorrect Admin PIN.');
+                        return;
+                      }
+                    }
+                    if (onDeleteMeme) {
+                      onDeleteMeme(meme.id);
+                    }
+                    setShowDeleteConfirm(false);
+                    onClose();
+                  }}
+                  className="w-1/2 btn-luxury-primary py-3 rounded-full text-xs font-sub uppercase font-bold tracking-wider cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
