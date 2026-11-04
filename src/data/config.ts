@@ -51,7 +51,7 @@ export const SITE_CONFIG = {
   backgroundImg: "/assets/aistudio/IMG_20261104_150301_747_32ecd421.jpg",
   // Toggle true for 100% monochrome grayscale background, false for natural tone
   defaultGrayscaleBackground: false,
-  // Blur amount for background (don't make too blurry)
+  // Blur amount for background: tuned to 2px light blur as requested
   backgroundBlur: "2px",
 };
 

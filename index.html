@@ -29,11 +29,12 @@
         position: relative;
         touch-action: pan-y;
         -webkit-overflow-scrolling: touch;
+        background-color: transparent;
       }
     </style>
   </head>
-  <body class="bg-black text-white antialiased selection:bg-white selection:text-black w-full max-w-full overflow-x-hidden">
-    <div id="root" class="w-full max-w-full overflow-x-hidden"></div>
+  <body class="bg-transparent text-white antialiased selection:bg-white selection:text-black w-full max-w-full overflow-x-hidden">
+    <div id="root" class="w-full max-w-full overflow-x-hidden bg-transparent"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

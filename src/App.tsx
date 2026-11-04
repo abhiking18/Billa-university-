@@ -273,7 +273,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full max-w-full overflow-x-hidden overflow-x-clip min-h-[100svh] bg-black text-white selection:bg-white selection:text-black">
+    <div className="relative w-full max-w-full overflow-x-hidden overflow-x-clip min-h-[100svh] bg-transparent text-white selection:bg-white selection:text-black">
       {/* 1. Preloader */}
       {!preloaderFinished && (
         <Preloader onComplete={() => setPreloaderFinished(true)} />
@@ -291,24 +291,34 @@ export default function App() {
       {/* 4. Page Wipe Transition Curtain */}
       <PageCurtain isWiping={isWiping} />
 
-      {/* 5. Fixed Full-Screen Background Photo Layer (No scale, no parallax, stays still while scrolling) */}
-      <div className="fixed inset-0 w-full max-w-full h-full -z-10 pointer-events-none overflow-hidden select-none">
-        <img
-          src={SITE_CONFIG.backgroundImg}
-          alt=""
-          className="w-full h-full object-cover transition-all duration-300"
-          style={{
-            filter: `blur(${SITE_CONFIG.backgroundBlur}) ${
-              isGrayscaleBg ? 'grayscale(100%)' : 'grayscale(0%)'
-            }`,
-          }}
-        />
-        {/* Dark overlay: 50% black at top fading to #000000 at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-[#0A0A0A]/80 to-black pointer-events-none" />
-      </div>
+      {/* 5. Fixed Full-Screen Background Photo (Layer 1: z-index 0) */}
+      <img
+        src={SITE_CONFIG.backgroundImg}
+        alt=""
+        className="fixed top-0 left-0 w-full h-full object-cover object-center pointer-events-none transition-all duration-300"
+        style={{
+          zIndex: 0,
+          filter: `blur(${SITE_CONFIG.backgroundBlur}) ${
+            isGrayscaleBg ? 'grayscale(100%)' : 'grayscale(0%)'
+          }`,
+        }}
+      />
 
-      {/* 6. Active Frame Viewport */}
-      <div className="relative z-10 flex flex-col min-h-[100svh] w-full max-w-full overflow-x-hidden overflow-x-clip">
+      {/* 6. Fixed Dark Gradient Overlay (Layer 2: z-index 1) */}
+      <div
+        className="fixed top-0 left-0 w-full h-full pointer-events-none"
+        style={{
+          zIndex: 1,
+          background:
+            'linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.65) 50%, rgba(0, 0, 0, 0.85) 100%)',
+        }}
+      />
+
+      {/* 7. Page Content Wrapper (Layer 3: z-index 2) */}
+      <div
+        className="relative flex flex-col min-h-[100svh] w-full max-w-full overflow-x-hidden overflow-x-clip bg-transparent"
+        style={{ zIndex: 2 }}
+      >
         <Navbar
           currentRoute={currentRoute}
           isGrayscaleBg={isGrayscaleBg}
@@ -317,7 +327,7 @@ export default function App() {
         />
 
         {/* Dynamic Route Content */}
-        <main className="flex-grow pt-20 md:pt-24 w-full max-w-full overflow-x-hidden overflow-x-clip">
+        <main className="flex-grow pt-20 md:pt-24 w-full max-w-full overflow-x-hidden overflow-x-clip bg-transparent">
           {currentRoute === '#/' && (
             <HomePage
               onNavigate={handleNavigate}
